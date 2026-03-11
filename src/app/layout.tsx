@@ -9,6 +9,9 @@ const playfair = Playfair_Display({ subsets: ["latin"], weight: "400", variable:
 export const metadata: Metadata = {
   title: "Nearu — The Emotional Intelligence Layer for AI Agents",
   description: "Nearu — The Emotional Intelligence Layer for AI Agents",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

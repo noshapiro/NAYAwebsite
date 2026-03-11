@@ -178,10 +178,11 @@ section {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 .channels-card-left {
   padding: 48px;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 .channels-card-right {
   position: relative;
@@ -189,7 +190,6 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.2);
 }
 
 /* Semantic tab: full sentence fits, subtle divider */
@@ -224,7 +224,10 @@ section {
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(255, 255, 255, 0.1);
   color: #38bdf8;
-  border-bottom: 2px solid #38bdf8;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 2;
 }
 @media (max-width: 767px) {
   .channels-card {
@@ -232,8 +235,6 @@ section {
     min-height: auto;
   }
   .channels-card-left {
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     padding: 32px 24px;
   }
   .channels-card-right {
