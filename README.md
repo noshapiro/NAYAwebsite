@@ -18,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses custom fonts: **NB International Pro** for headings and logo, and **Saans Trial** for body text. Place `.woff2`/`.woff` files in `public/fonts/` (see `globals.css` for filenames). Fallbacks: Arial Black / Arial for headings, Arial for body.
 
 ## Learn More
 
