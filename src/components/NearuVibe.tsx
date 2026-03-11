@@ -73,7 +73,7 @@ export function NearuVibe() {
     tick();
   }, []);
 
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timeoutRef = useRef<number | ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const el = codeBlockRef.current;
