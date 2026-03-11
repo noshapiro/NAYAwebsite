@@ -288,14 +288,8 @@ export function EmotionChannels() {
             })}
           </div>
 
-          {/* One unified card — two columns; radius under active tab removed so tab merges with card */}
-          <div
-            className="channels-card w-full max-w-5xl"
-            style={{
-              borderTopLeftRadius: activeIndex === 0 ? 0 : 16,
-              borderTopRightRadius: activeIndex === 2 ? 0 : 16,
-            }}
-          >
+          {/* One unified card — two columns; no top radius so tabs sit flush on card */}
+          <div className="channels-card w-full max-w-5xl">
             <div className="channels-card-left flex flex-col justify-center">
               <h3 className="text-xl font-bold tracking-tight text-white md:text-2xl">{tab.title}</h3>
               <p className="mt-1.5 text-[0.9rem] text-[var(--text-2)]">{tab.subtitle}</p>

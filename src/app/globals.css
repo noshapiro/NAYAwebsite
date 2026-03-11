@@ -176,7 +176,10 @@ section {
   min-height: 400px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -204,12 +207,14 @@ section {
   display: flex;
   gap: 0;
   margin-bottom: 0;
-  border-bottom: none;
+  padding-bottom: 0;
+  position: relative;
+  z-index: 2;
 }
 .channels-tab {
   padding: 10px 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px 8px 0 0;
   font-size: 13px;
   color: #8899aa;
@@ -220,11 +225,15 @@ section {
 .channels-tab:hover {
   color: rgba(255, 255, 255, 0.9);
 }
+.channels-tab:not(.active) {
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
 .channels-tab.active {
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(255, 255, 255, 0.1);
   color: #38bdf8;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   margin-bottom: -1px;
   position: relative;
   z-index: 2;
