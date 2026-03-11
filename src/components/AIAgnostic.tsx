@@ -6,10 +6,10 @@ import { Reveal } from "./Reveal";
 
 // Logos: place PNG (or SVG) files in public/llm-logos/ (openai.png, claude.png, etc.) to show them instead of abbreviations
 const MODELS = [
-  { abbr: "GP", name: "GPT-4o", org: "OpenAI", color: "#10B981", logoSlug: "openai" },
+  { abbr: "GP", name: "GPT", org: "OpenAI", color: "#10B981", logoSlug: "openai" },
   { abbr: "AN", name: "Claude", org: "Anthropic", color: "#FF9050", logoSlug: "claude" },
   { abbr: "GG", name: "Gemini", org: "Google", color: "#4285F4", logoSlug: "gemini" },
-  { abbr: "MT", name: "Llama 3.2", org: "Meta", color: "#22D3A5", logoSlug: "llama" },
+  { abbr: "MT", name: "Llama", org: "Meta", color: "#22D3A5", logoSlug: "llama" },
   { abbr: "DS", name: "DeepSeek", org: "DeepSeek", color: "#FBBF24", logoSlug: "deepseek" },
   { abbr: "LCL", name: "Local / On-Prem", org: "Air-gapped support", color: "#22D3A5", logoSlug: "local" },
 ] as const;
@@ -52,7 +52,11 @@ function ModelLogo({ m }: { m: (typeof MODELS)[number] }) {
 
 export function AIAgnostic() {
   return (
-    <section className="bg-[var(--bg)]" id="models">
+    <section
+      className="py-16 md:py-20"
+      id="models"
+      style={{ background: "linear-gradient(to bottom, #0e0e0e 0%, #0a0a0a 100%)" }}
+    >
       <div className="container">
         <Reveal className="text-center">
           <div className="flex flex-col items-center">
@@ -70,7 +74,11 @@ export function AIAgnostic() {
             {MODELS.map((m) => (
               <div
                 key={m.name}
-                className="flex items-center gap-3 rounded-[14px] border border-white/10 bg-[var(--surface)] p-4 transition hover:border-white/15"
+                className="flex items-center gap-3 rounded-[14px] border p-4 backdrop-blur-[8px] transition hover:bg-[rgba(255,255,255,0.07)]"
+                style={{
+                  background: "rgba(255, 255, 255, 0.04)",
+                  borderColor: "rgba(255, 255, 255, 0.08)",
+                }}
               >
                 <ModelLogo m={m} />
                 <div>

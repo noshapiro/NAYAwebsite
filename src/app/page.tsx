@@ -10,7 +10,6 @@ import { UseCases } from "@/components/UseCases";
 import { WhyNow } from "@/components/WhyNow";
 import { Competitive } from "@/components/Competitive";
 import { FAQ } from "@/components/FAQ";
-import { Team } from "@/components/Team";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
 
@@ -28,7 +27,6 @@ export default function Home() {
       <UseCases />
       <WhyNow />
       <Competitive />
-      <Team />
       <FAQ />
       <FinalCTA />
       <Footer />

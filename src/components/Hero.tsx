@@ -144,14 +144,14 @@ export function Hero() {
           <Reveal className="flex flex-col items-center overflow-visible">
             {/* Parent wrapper — no border/background, overflow visible */}
             <div className="relative w-[420px] shrink-0" style={{ overflow: "visible" }}>
-              {/* Video/avatar container — single clean border, 24px radius */}
+              {/* Video/avatar container — thin blue outline; overflow hidden to avoid bottom line artifact */}
               <div
-                className="relative w-full rounded-[24px]"
+                className="relative w-full overflow-hidden rounded-[24px]"
                 style={{
                   aspectRatio: "4/5",
                   background: "#1a1a1a",
-                  border: "1px solid rgba(255, 255, 255, 0.10)",
-                  overflow: "visible",
+                  border: "1px solid rgba(45, 156, 219, 0.35)",
+                  boxShadow: "0 0 0 1px rgba(45, 156, 219, 0.1), 0 0 30px rgba(45, 156, 219, 0.08)",
                 }}
               >
                 {/* Inner clip for video + gradient — overflow hidden only here */}

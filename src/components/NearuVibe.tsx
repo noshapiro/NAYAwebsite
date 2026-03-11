@@ -27,7 +27,11 @@ const channels = [
 
 export function NearuVibe() {
   return (
-    <section className="relative overflow-hidden bg-[#111111]" id="nearuvibe">
+    <section
+      className="relative overflow-hidden py-16 md:py-20"
+      id="nearuvibe"
+      style={{ background: "linear-gradient(to bottom, #111111 0%, #0e0e0e 100%)" }}
+    >
       <div className="container relative z-10">
         <Reveal className="mb-12 text-left">
           <div className="label">Technology</div>
@@ -47,7 +51,14 @@ export function NearuVibe() {
 
             <div className="mt-8 flex flex-col gap-4">
               {channels.map((c) => (
-                <div key={c.title} className="rounded-[var(--radius)] border border-white/10 bg-[var(--surface)] p-5 transition hover:border-[var(--accent-30)]">
+                <div
+                  key={c.title}
+                  className="rounded-[var(--radius)] border p-5 backdrop-blur-[8px] transition hover:bg-[rgba(255,255,255,0.07)]"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.04)",
+                    borderColor: "rgba(255, 255, 255, 0.08)",
+                  }}
+                >
                   <div className="mb-1 flex items-center gap-2 text-[0.78rem] font-extrabold text-[var(--text)]">
                     <span className={`inline-flex h-5 w-5 items-center justify-center rounded ${c.iconStyle}`}>
                       <c.Icon className="h-[0.7rem] w-[0.7rem]" fill="none" {...STROKE} />
@@ -65,7 +76,14 @@ export function NearuVibe() {
                 { val: "3", lbl: "Independent channels" },
                 { val: "REST", lbl: "+ WebSocket API" },
               ].map((b) => (
-                <div key={b.lbl} className="min-w-[110px] rounded-[var(--radius)] border border-white/10 bg-[var(--surface)] px-5 py-3.5 text-center">
+                <div
+                  key={b.lbl}
+                  className="min-w-[110px] rounded-[var(--radius)] border px-5 py-3.5 text-center"
+                  style={{
+                    background: "rgba(45, 156, 219, 0.06)",
+                    borderColor: "rgba(45, 156, 219, 0.15)",
+                  }}
+                >
                   <div className="font-[var(--font-head)] text-[1.3rem] font-extrabold text-[var(--accent)]">{b.val}</div>
                   <div className="mt-1 text-[0.7rem] text-[var(--text-3)]">{b.lbl}</div>
                 </div>
@@ -75,7 +93,10 @@ export function NearuVibe() {
 
           <div
             className="overflow-hidden rounded-[var(--radius-lg)]"
-            style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.07)" }}
+            style={{
+              background: "rgba(0, 0, 0, 0.3)",
+              border: "1px solid rgba(255, 255, 255, 0.07)",
+            }}
           >
             <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.02] px-4 py-3">
               <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
