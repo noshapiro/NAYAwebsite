@@ -24,21 +24,20 @@ export function SoulEngine() {
               Soul Engine™
             </h2>
             <p className="mt-4 text-[1rem] leading-[1.75] text-[var(--text-2)]">
-              Nearu is not an AI model. It&apos;s the{" "}
-              <span className="font-semibold text-[var(--accent)]">emotional intelligence infrastructure layer</span> that sits between humans and any intelligent system — giving AI agents the ability to recognize emotion, respond with empathy, develop unique personality over time, and build persistent, evolving relationships.
+              Nearu provides the{" "}
+              <span className="font-semibold text-[var(--accent)]">emotional intelligence infrastructure layer</span> that sits between humans and any intelligent system — giving AI agents the ability to recognize emotion, respond with empathy, develop unique personality over time, and build persistent, evolving relationships with the user.
             </p>
-            <p className="mt-4 text-[1rem] text-[var(--text-3)]">AI models provide intelligence. Nearu provides presence.</p>
           </div>
 
-          <div className="flex flex-col gap-[3px]">
+          <div className="soul-engine-list flex flex-col gap-[3px]">
             {layers.map((l) => (
               <div
                 key={l.num}
                 className={[
-                  "relative flex items-center gap-5 overflow-hidden rounded-[10px] border px-5 py-4 transition",
+                  "soul-engine-row flex items-center gap-5 overflow-hidden rounded-[10px] border px-5 py-4",
                   l.highlight
                     ? "border-[var(--accent-30)] bg-[linear-gradient(90deg,var(--accent-08),transparent)]"
-                    : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent-30)] hover:bg-[var(--surface-2)]",
+                    : "border-[var(--border)] bg-[var(--surface)]",
                 ].join(" ")}
               >
                 <div

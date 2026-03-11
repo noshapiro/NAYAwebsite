@@ -11,18 +11,45 @@ export const EMOTION_9_LABELS = [
   "Boredom",
 ] as const;
 
-/** Bar colors per emotion (reference: Live Demo skrin 2) */
+/** Bar colors per emotion: blue = calm/safe, orange = alert, red = critical */
 export const EMOTION_9_COLORS = [
-  "#22C55E",   /* Calmness — green */
-  "#EAB308",   /* Anxiety — amber */
-  "#EF4444",   /* Frustration — red */
-  "#A855F7",   /* Sadness — purple */
-  "#EF4444",   /* Anger — red */
-  "#22C55E",   /* Confidence — green */
-  "#3B82F6",   /* Engagement — blue */
-  "#06B6D4",   /* Surprise — cyan */
-  "#6B7280",   /* Boredom — gray */
+  "#38bdf8",   /* Calmness */
+  "#f97316",   /* Anxiety */
+  "#fb923c",   /* Frustration */
+  "rgba(251, 146, 60, 0.6)",   /* Sadness */
+  "#ef4444",   /* Anger */
+  "#38bdf8",   /* Confidence */
+  "#60a5fa",   /* Engagement */
+  "#818cf8",   /* Surprise */
+  "#475569",   /* Boredom */
 ] as const;
+
+/** Detected emotion label → badge color (matches corresponding bar). */
+export const EMOTION_BADGE_COLORS: Record<string, string> = {
+  Anxious: "#f97316",
+  Fearful: "#f97316",
+  Distressed: "#f97316",
+  Frustrated: "#fb923c",
+  Sad: "#f59e0b",
+  Angry: "#ef4444",
+  Calm: "#38bdf8",
+  Confident: "#34d399",
+  Engaged: "#60a5fa",
+  Surprised: "#818cf8",
+  Bored: "#475569",
+  Skeptical: "#60a5fa",
+  Neutral: "#94a3b8",
+};
+
+/** Badge style for detected emotion (background/border/color from bar color). */
+export function getEmotionBadgeStyle(detectedEmotion: string): { background: string; border: string; color: string } {
+  const color = EMOTION_BADGE_COLORS[detectedEmotion] ?? "#94a3b8";
+  return {
+    background: `${color}18`,
+    border: `1px solid ${color}`,
+    color,
+  };
+}
 
 export type EqSnapshot = {
   bars: number[];

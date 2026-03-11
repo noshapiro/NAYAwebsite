@@ -1,12 +1,12 @@
 "use client";
 
-import { VolumeX, Sparkles, Building2, Headphones, Activity, TrendingUp, RotateCcw, Check } from "lucide-react";
+import { VolumeX, Sparkles, Building2, Headphones, Activity, TrendingUp, RotateCcw, Play } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Reveal } from "../Reveal";
 import type { DemoStep, EqSnapshot } from "./DemoPlayer.types";
-import { EMOTION_9_COLORS, EMOTION_9_LABELS } from "./DemoPlayer.types";
+import { EMOTION_9_COLORS, EMOTION_9_LABELS, getEmotionBadgeStyle } from "./DemoPlayer.types";
 import { DEMO_SCENARIOS } from "./scenarios";
 
 type Msg = { id: string; role: "user" | "bot"; html: string; nearu?: boolean };
@@ -22,16 +22,6 @@ const DEFAULT_EQ: EqSnapshot = {
 
 function sleep(ms: number) {
   return new Promise<void>((r) => setTimeout(r, ms));
-}
-
-function hexToRgba(hex: string, alpha: number) {
-  const h = hex.replace("#", "").trim();
-  const isShort = h.length === 3;
-  const r = parseInt(isShort ? h[0] + h[0] : h.slice(0, 2), 16);
-  const g = parseInt(isShort ? h[1] + h[1] : h.slice(2, 4), 16);
-  const b = parseInt(isShort ? h[2] + h[2] : h.slice(4, 6), 16);
-  if ([r, g, b].some((n) => Number.isNaN(n))) return `rgba(255,255,255,${alpha})`;
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 function playableSteps(steps: DemoStep[]) {
@@ -55,40 +45,6 @@ export function DemoPlayer() {
 
   const scrollRefVanilla = useRef<HTMLDivElement | null>(null);
   const scrollRefNearu = useRef<HTMLDivElement | null>(null);
-
-  const dominantEqColor = useMemo(() => {
-    const bars = eq.bars ?? [];
-    const colors = eq.colors ?? [];
-    if (!bars.length || !colors.length) return "var(--accent)";
-    let bestIdx = 0;
-    for (let i = 1; i < bars.length; i++) {
-      if ((bars[i] ?? 0) > (bars[bestIdx] ?? 0)) bestIdx = i;
-    }
-    return colors[bestIdx] ?? "var(--accent)";
-  }, [eq.bars, eq.colors]);
-
-  const detectedPillStyle = useMemo(() => {
-    // Colors are hex strings from EMOTION_9_COLORS (reference palette)
-    const c = dominantEqColor;
-    if (!c.startsWith("#")) {
-      return {
-        background: "var(--accent-12)",
-        borderColor: "var(--accent-25)",
-        color: "var(--accent)",
-      };
-    }
-    return {
-      background: hexToRgba(c, 0.16),
-      borderColor: hexToRgba(c, 0.38),
-      color: c,
-    };
-  }, [dominantEqColor]);
-
-  const totalPlayable = useMemo(() => playableSteps(scenario.steps), [scenario.steps]);
-  const donePlayable = useMemo(
-    () => playableSteps(scenario.steps.slice(0, stepIdx)),
-    [scenario.steps, stepIdx],
-  );
 
   const finished = stepIdx >= scenario.steps.length;
 
@@ -178,13 +134,6 @@ export function DemoPlayer() {
     setIsPlaying(false);
   }, [addMsg, finished, isPlaying, runEq, scenario.steps]);
 
-  const btnLabel = useMemo(() => {
-    if (finished) return "Done";
-    return "Play";
-  }, [finished]);
-
-  const progressPct = totalPlayable === 0 ? 0 : Math.min(100, (donePlayable / totalPlayable) * 100);
-
   return (
     <section className="bg-[var(--bg)]" id="demo">
       <div className="container">
@@ -232,173 +181,239 @@ export function DemoPlayer() {
               })}
           </div>
 
-          <div className="mt-6 grid items-start gap-4 lg:grid-cols-[1fr_300px]">
-            <div>
-              <div className="overflow-hidden rounded-[20px] border border-white/15 bg-[var(--surface)]">
-                <div className="grid grid-cols-1 border-b border-white/10 bg-[var(--surface)] md:grid-cols-2">
-                  <div className="flex items-center gap-2 border-white/10 px-4 py-2.5 md:border-r">
-                    <span className="text-[0.78rem] font-bold text-[var(--text-2)]">Standard AI Agent</span>
-                  </div>
-                  <div className="flex items-center gap-2 border-white/10 px-4 py-2.5 md:border-l">
-                    <span className="text-[0.78rem] font-bold text-[var(--text)]">{scenario.agentName}</span>
-                  </div>
-                </div>
-
-                <div className="grid min-h-[280px] grid-cols-1 md:grid-cols-2">
-                  <div className="flex flex-col gap-2 border-white/10 p-4 md:border-r">
-                    <div className="mb-1 flex items-center gap-2 border-b border-white/10 pb-2.5">
-                      <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-[#2a2a3e]">
-                        <Image src="/kaltura-avatar.png" alt="Standard Agent" fill className="object-cover" sizes="28px" />
-                      </div>
-                      <div>
-                        <div className="text-[0.75rem] font-bold leading-[1.2]">Standard Agent</div>
-                        <div className="text-[0.62rem] text-[var(--text-3)]">No emotion detection</div>
-                      </div>
+          <div className="mt-6">
+            <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+                {/* Card 1 — Agent A */}
+                <div className="demo-panel flex min-h-[280px] flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[rgba(255,255,255,0.03)]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 px-4 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[0.78rem] font-bold text-white">Agent A</span>
+                      <span className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[0.68rem] font-medium text-[var(--text-2)]">
+                        Standard Avatar
+                      </span>
                     </div>
-
-                    <div ref={scrollRefVanilla} className="flex flex-1 flex-col gap-2 overflow-auto pr-1">
-                      <AnimatePresence initial={false}>
-                        {vanillaMsgs.map((m) => (
-                          <motion.div
-                            key={m.id}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                            className={[
-                              "flex max-w-[92%] flex-col",
-                              m.role === "user" ? "items-start" : "ml-auto items-end",
-                            ].join(" ")}
-                          >
-                            <div
-                              className={[
-                                "max-w-[520px] rounded-[12px] px-4 py-3.5 text-[0.8rem] leading-[1.6]",
-                                m.role === "user"
-                                  ? "border border-[rgba(255,255,255,0.05)] bg-[#0F1724] text-[#DCE6F5]"
-                                  : "border border-[rgba(120,160,255,0.18)] bg-[rgba(35,48,75,0.45)] text-[#CFE3FF] [&_.ehw]:font-medium [&_.ehw]:text-[#63B3FF]",
-                              ].join(" ")}
-                            >
-                              {m.html}
-                            </div>
-                          </motion.div>
-                        ))}
-                      </AnimatePresence>
-                    </div>
-
-                    {vanillaTyping && (
-                      <div className="mt-1 w-fit rounded-[10px] border border-white/10 bg-white/[0.03] px-3 py-2">
-                        <div className="flex items-center gap-1">
-                          {[0, 1, 2].map((i) => (
-                            <motion.span
-                              key={i}
-                              className="inline-block h-[5px] w-[5px] rounded-full bg-[var(--text-3)]"
-                              animate={{ y: [0, -5, 0], opacity: [0.4, 1, 0.4] }}
-                              transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2, ease: "easeInOut" }}
-                            />
-                          ))}
+                    <span className="text-[0.68rem] text-[var(--text-3)]">No emotion detection</span>
+                  </div>
+                  <div className="border-b border-white/10 px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[#2a2a3e]">
+                          <Image src="/kaltura-avatar.png" alt="Standard Agent" fill className="object-cover" sizes="40px" />
                         </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Nearu — same background as Standard Agent */}
-                  <div className="flex flex-col gap-2 p-4">
-                    <div className="mb-1 flex items-center gap-2 border-b border-white/10 pb-2.5">
-                      <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full ring-1 ring-white/10" style={{ background: scenario.agentColor }}>
-                        <Image src="/nearu-avatar.png" alt={scenario.agentName} fill className="object-cover" sizes="28px" />
-                        <span className="absolute bottom-0 right-0 h-1.5 w-1.5 rounded-full bg-[var(--green)] ring-2 ring-[var(--accent-08)]" />
-                      </div>
-                      <div>
-                        <div className="text-[0.75rem] font-bold leading-[1.2]">{scenario.agentName}</div>
-                        <div className="flex items-center gap-1.5 text-[0.62rem] text-[var(--text-2)]">
-                          <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[var(--green)]" />
-                          NearuVibe™ monitoring
+                        <div>
+                          <div className="text-[0.8rem] font-bold leading-tight text-white">Standard Agent</div>
+                          <div className="mt-0.5 text-[0.68rem] text-[var(--text-3)]">● No emotion detection</div>
+                          <div className="text-[0.68rem] text-[var(--text-3)]">⏱ Emotional state: unknown</div>
                         </div>
                       </div>
                     </div>
 
-                    <div ref={scrollRefNearu} className="flex flex-1 flex-col gap-2 overflow-auto pr-1">
-                      <AnimatePresence initial={false}>
-                        {nearuMsgs.map((m) => (
-                          <motion.div
-                            key={m.id}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                            className={[
-                              "flex max-w-[92%] flex-col",
-                              m.role === "user" ? "items-start" : "ml-auto items-end",
-                            ].join(" ")}
-                          >
-                            <div
-                              className={[
-                                "max-w-[520px] rounded-[12px] px-4 py-3.5 text-[0.8rem] leading-[1.6]",
-                                m.role === "user"
-                                  ? "border border-[rgba(255,255,255,0.05)] bg-[#0F1724] text-[#DCE6F5]"
-                                  : "border border-[rgba(120,160,255,0.18)] bg-[rgba(35,48,75,0.45)] text-[#CFE3FF] [&_.ehw]:font-medium [&_.ehw]:text-[#63B3FF]",
-                              ].join(" ")}
+                    <div className="flex flex-1 flex-col gap-2 p-4">
+                      {vanillaTyping && (
+                        <div className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-center text-[0.8rem] text-[var(--text-3)]">
+                          Processing request...
+                        </div>
+                      )}
+                      <div ref={scrollRefVanilla} className="flex flex-1 flex-col gap-2 overflow-auto pr-1">
+                        <AnimatePresence initial={false}>
+                          {vanillaMsgs.map((m) => (
+                            <motion.div
+                              key={m.id}
+                              initial={{ opacity: 0, y: 8 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                              className={m.role === "user" ? "bubble-user" : "bubble-agent"}
                               dangerouslySetInnerHTML={{ __html: m.html }}
                             />
-                          </motion.div>
-                        ))}
-                      </AnimatePresence>
+                          ))}
+                        </AnimatePresence>
+                      </div>
                     </div>
 
-                    {nearuTyping && (
-                      <div className="mt-1 w-fit rounded-[10px] border border-[var(--accent-20)] bg-[var(--accent-08)] px-3 py-2">
-                        <div className="flex items-center gap-1">
-                          {[0, 1, 2].map((i) => (
-                            <motion.span
-                              key={i}
-                              className="inline-block h-[5px] w-[5px] rounded-full bg-[var(--accent)]"
-                              animate={{ y: [0, -5, 0], opacity: [0.4, 1, 0.4] }}
-                              transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2, ease: "easeInOut" }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                  <div className="flex items-center justify-between border-t border-white/10 px-4 py-2.5 text-[13px] text-[#556677]">
+                    <span>Detected emotion: —</span>
+                    <span>No confidence data</span>
                   </div>
                 </div>
 
-                {/* Controls */}
-                <div className="flex items-center gap-3 border-t border-white/10 bg-[var(--surface)] px-4 py-3.5">
+                {/* Card 2 — Agent B */}
+                <div className="demo-panel flex min-h-[280px] flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[rgba(255,255,255,0.03)]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 px-4 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[0.78rem] font-bold text-white">Agent B</span>
+                      <span
+                        className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[0.68rem] font-medium text-white"
+                        style={{ background: "#38bdf8" }}
+                      >
+                        NEARU Soul Engine™
+                      </span>
+                    </div>
+                    <span className="text-[0.68rem] text-[var(--text-3)]">NearuVibe™ monitoring</span>
+                  </div>
+                  <div className="border-b border-white/10 px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-1 ring-white/10" style={{ background: scenario.agentColor }}>
+                          <Image src="/nearu-avatar.png" alt="Standard Agent" fill className="object-cover" sizes="40px" />
+                          <span className="absolute bottom-0 right-0 h-1.5 w-1.5 rounded-full bg-[var(--green)] ring-2 ring-[var(--accent-08)]" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[0.8rem] font-bold leading-tight text-white">Standard Agent</span>
+                            <span className="rounded px-1.5 py-0.5 text-[0.6rem] font-semibold text-[#38bdf8]" style={{ background: "rgba(56,189,248,0.15)", border: "1px solid rgba(56,189,248,0.3)" }}>
+                              NEARU
+                            </span>
+                          </div>
+                          <div className="mt-0.5 flex items-center gap-1.5 text-[0.68rem] text-[var(--text-2)]">
+                            <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[var(--green)]" />
+                            NearuVibe™ monitoring
+                          </div>
+                          <div className="text-[0.68rem] text-[var(--text-3)]">
+                            ⏱ {eq.pill.includes(" • ") ? (eq.pill.split(" • ")[0] ?? "Neutral") : "Neutral (baseline)"}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-1 flex-col gap-2 p-4">
+                      {vanillaMsgs.length === 0 ? (
+                        <div className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-[0.8rem] text-[var(--text-3)]">
+                          <span>NearuVibe™ monitoring all signals...</span>
+                          <div className="flex items-center gap-0.5">
+                            {[0, 1, 2, 3, 4].map((i) => (
+                              <motion.span
+                                key={i}
+                                className="inline-block h-4 w-1 rounded-full bg-[#38bdf8]"
+                                animate={{ height: [8, 16, 8], opacity: [0.5, 1, 0.5] }}
+                                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.12, ease: "easeInOut" }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="emotion-bars">
+                            {eq.labels.map((lbl, i) => (
+                              <div key={lbl} className="emotion-row">
+                                <span className="emotion-label">{lbl}</span>
+                                <div className="emotion-bar-track">
+                                  <motion.div
+                                    className="emotion-bar-fill"
+                                    style={{ background: eq.colors[i] }}
+                                    animate={{ width: `${eq.bars[i]}%` }}
+                                    transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                                  />
+                                </div>
+                                <span className="emotion-percent">{eq.bars[i] > 0 ? `${eq.bars[i]}%` : "—"}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <motion.div
+                            className="nearu-analysis-box flex items-center justify-between gap-2 border text-[0.68rem] text-[#38bdf8]"
+                            style={{ borderColor: "rgba(56,189,248,0.2)", background: "rgba(56,189,248,0.06)" }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <div className="min-w-0 flex-1" dangerouslySetInnerHTML={{ __html: eq.verdictHtml }} />
+                            <div className="flex shrink-0 items-center gap-0.5">
+                              {[0, 1, 2, 3, 4].map((i) => (
+                                <motion.span
+                                  key={i}
+                                  className="inline-block h-3 w-0.5 rounded-full bg-[#38bdf8]"
+                                  animate={{ height: [6, 12, 6], opacity: [0.6, 1, 0.6] }}
+                                  transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
+                                />
+                              ))}
+                            </div>
+                          </motion.div>
+                        </>
+                      )}
+
+                      <div ref={scrollRefNearu} className="flex flex-1 flex-col gap-2 overflow-auto pr-1">
+                        <AnimatePresence initial={false}>
+                          {nearuMsgs.map((m) => (
+                            <motion.div
+                              key={m.id}
+                              initial={{ opacity: 0, y: 8 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                              className={m.role === "user" ? "bubble-user" : "bubble-agent"}
+                              dangerouslySetInnerHTML={{ __html: m.html }}
+                            />
+                          ))}
+                        </AnimatePresence>
+                      </div>
+
+                      {nearuTyping && (
+                        <div className="w-fit rounded-[10px] border border-[var(--accent-20)] bg-[var(--accent-08)] px-3 py-2">
+                          <div className="flex items-center gap-1">
+                            {[0, 1, 2].map((i) => (
+                              <motion.span
+                                key={i}
+                                className="inline-block h-[5px] w-[5px] rounded-full bg-[var(--accent)]"
+                                animate={{ y: [0, -5, 0], opacity: [0.4, 1, 0.4] }}
+                                transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2, ease: "easeInOut" }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                  <div className="flex items-center justify-between border-t border-white/10 px-4 py-2.5 text-[13px] text-[#556677]">
+                    <span>Detected emotion</span>
+                    <div className="flex items-center gap-3">
+                      {eq.pill.includes(" • ") ? (
+                        <>
+                          <motion.span
+                            className="rounded-lg border px-2.5 py-[3px] text-[12px] font-semibold"
+                            style={getEmotionBadgeStyle(eq.pill.split(" • ")[0] ?? "Neutral")}
+                            initial={false}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            {eq.pill.split(" • ")[0]}
+                          </motion.span>
+                          <span>{eq.pill.split(" • ")[1] ?? ""} confidence</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>—</span>
+                          <span>No confidence data</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Controls */}
+              <div className="demo-controls flex flex-wrap items-center gap-3 py-4">
                   <button
                     type="button"
                     onClick={playFull}
                     disabled={isPlaying || finished}
-                    className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2 text-[0.8rem] font-extrabold text-white shadow-[0_0_16px_var(--accent-glow)] transition hover:translate-y-[-1px] hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
+                    className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-[0.8rem] font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                    style={{ background: "#38bdf8" }}
                   >
-                    {finished ? <Check className="h-4 w-4" strokeWidth={2} /> : null}
-                    {btnLabel}
+                    <Play className="h-4 w-4 shrink-0" strokeWidth={2} fill="currentColor" />
+                    {isPlaying ? "Playing..." : "Play"}
                   </button>
-
-                  <div className="h-[3px] flex-1 overflow-hidden rounded-sm bg-white/10">
-                    <motion.div
-                      className="h-full rounded-sm bg-[var(--accent)]"
-                      animate={{ width: `${progressPct}%` }}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
-                    />
-                  </div>
-
-                  <div className="whitespace-nowrap text-[0.7rem] text-[var(--text-3)]">
-                    Step {donePlayable} / {totalPlayable}
-                  </div>
-
                   <button
                     type="button"
                     onClick={reset}
-                    className={[
-                      "inline-flex items-center gap-1.5 rounded-lg border px-3.5 py-1.5 text-[0.75rem] font-semibold transition",
-                      finished ? "border-white/10 text-[var(--text-3)] hover:border-white/15 hover:text-[var(--text)]" : "hidden",
-                    ].join(" ")}
+                    className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-[0.8rem] font-semibold text-[var(--text-2)] transition hover:border-white/15 hover:text-[var(--text)]"
+                    style={{ borderColor: "rgba(255,255,255,0.1)" }}
                   >
-                    <RotateCcw className="h-3.5 w-3.5" strokeWidth={1.5} />
-                    Restart
+                    <RotateCcw className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+                    Reset
                   </button>
+                  <span className="text-[13px] text-[#556677]">
+                    Select a scenario above, then play to see the difference between standard and NEARU-enhanced responses.
+                  </span>
                 </div>
-              </div>
 
               {/* Callouts */}
               <motion.div
@@ -423,71 +438,6 @@ export function DemoPlayer() {
                   />
                 </div>
               </motion.div>
-            </div>
-
-            {/* EQ panel */}
-            <div className="sticky top-20 overflow-hidden rounded-[20px] border border-white/15 bg-[var(--surface)]">
-              <div className="flex flex-wrap items-center justify-end gap-2 border-b border-white/10 bg-[var(--surface)] px-4 py-3">
-                <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-medium"
-                  style={{
-                    background: "rgba(30,40,60,0.6)",
-                    color: "#6BB8FF",
-                    border: "1px solid rgba(90,160,255,0.25)",
-                    boxShadow: "0 0 12px rgba(90,160,255,0.12)",
-                  }}
-                >
-                  NearuVibe™ monitoring
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-3 px-4 py-3.5">
-                <div className="flex flex-col gap-2">
-                  {eq.labels.map((lbl, i) => (
-                    <div key={lbl} className="flex flex-col gap-1">
-                      <div className="flex justify-between text-[0.68rem] text-[var(--text-3)]">
-                        <span>{lbl}</span>
-                        <span className="text-[var(--text-2)]">{eq.bars[i] > 0 ? `${eq.bars[i]}%` : "—"}</span>
-                      </div>
-                      <div className="h-1 overflow-hidden rounded-sm bg-white/10">
-                        <motion.div
-                          className="h-full rounded-sm"
-                          style={{ background: eq.colors[i] }}
-                          animate={{ width: `${eq.bars[i]}%` }}
-                          transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <motion.div
-                  className="rounded-lg border border-[var(--accent-20)] bg-[var(--accent-08)] px-2.5 py-2 text-[0.68rem] leading-[1.5] text-[var(--accent)]"
-                  animate={{ opacity: eq.verdictHtml === DEFAULT_EQ.verdictHtml ? 0.85 : 1 }}
-                  transition={{ duration: 0.3 }}
-                  dangerouslySetInnerHTML={{ __html: eq.verdictHtml }}
-                />
-
-                <div className="flex items-center justify-between">
-                  <span className="text-[0.65rem] text-[var(--text-3)]">Detected emotion</span>
-                  <motion.span
-                    className="rounded-full border px-2.5 py-1 text-[0.65rem] font-extrabold"
-                    animate={{
-                      background: detectedPillStyle.background,
-                      color: detectedPillStyle.color,
-                      borderColor: detectedPillStyle.borderColor,
-                    }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    style={{
-                      background: detectedPillStyle.background,
-                      borderColor: detectedPillStyle.borderColor,
-                      color: detectedPillStyle.color,
-                    }}
-                  >
-                    {eq.pill}
-                  </motion.span>
-                </div>
-              </div>
             </div>
           </div>
         </Reveal>

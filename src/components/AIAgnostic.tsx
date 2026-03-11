@@ -1,5 +1,6 @@
 "use client";
 
+import { Server } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Reveal } from "./Reveal";
@@ -14,11 +15,25 @@ const MODELS = [
   { abbr: "LCL", name: "Local / On-Prem", org: "Air-gapped support", color: "#22D3A5", logoSlug: "local" },
 ] as const;
 
+const STROKE = { strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+
 function ModelLogo({ m }: { m: (typeof MODELS)[number] }) {
   const [trySvg, setTrySvg] = useState(false);
   const [imgError, setImgError] = useState(false);
-  const logoSrc = `/llm-logos/${m.logoSlug}.${trySvg ? "svg" : "png"}`;
 
+  // Local / On-Prem: use Server icon instead of image/abbr
+  if (m.logoSlug === "local") {
+    return (
+      <div
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-[var(--surface-2)]"
+        style={{ color: m.color }}
+      >
+        <Server className="h-5 w-5" fill="none" {...STROKE} />
+      </div>
+    );
+  }
+
+  const logoSrc = `/llm-logos/${m.logoSlug}.${trySvg ? "svg" : "png"}`;
   const handleError = () => {
     if (!trySvg) setTrySvg(true);
     else setImgError(true);

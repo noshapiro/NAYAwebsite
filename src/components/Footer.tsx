@@ -30,7 +30,7 @@ export function Footer() {
               </div>
             )}
             <p className="mt-4 text-[0.8rem] leading-[1.6] text-[var(--text-2)]">
-              The emotional intelligence infrastructure layer for AI agents and robotics. We build souls for machines.
+              The emotional intelligence infrastructure layer for AI agents and robotics.
             </p>
             <div className="mt-4 text-[0.78rem] leading-[1.65] text-[var(--text-3)]">
               noa@nnearu.com
@@ -118,7 +118,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a className="transition hover:text-[var(--text)]" href="#">
+                <a className="transition hover:text-[var(--text)]" href="/privacy">
                   Privacy Policy
                 </a>
               </li>

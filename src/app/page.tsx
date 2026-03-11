@@ -4,6 +4,7 @@ import { Hero } from "@/components/Hero";
 import { Problem } from "@/components/Problem";
 import { SoulEngine } from "@/components/SoulEngine";
 import { NearuVibe } from "@/components/NearuVibe";
+import { EmotionChannels } from "@/components/EmotionChannels";
 import { AIAgnostic } from "@/components/AIAgnostic";
 import { DemoPlayer } from "@/components/DemoPlayer/DemoPlayer";
 import { UseCases } from "@/components/UseCases";
@@ -22,6 +23,7 @@ export default function Home() {
       <Problem />
       <SoulEngine />
       <NearuVibe />
+      <EmotionChannels />
       <AIAgnostic />
       <DemoPlayer />
       <UseCases />

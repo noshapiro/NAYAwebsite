@@ -1,7 +1,34 @@
 "use client";
 
 import { Mic, MessageSquare, Eye } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
+
+const API_RESPONSE_RAW = `{
+  "transcript": "I think we should move forward",
+
+  "acoustic_emotion": {
+    "label": "anxious",
+    "confidence": 0.84
+  },
+
+  "semantic_emotion": {
+    "label": "neutral",
+    "confidence": 0.63
+  },
+
+  "face_emotion": {
+    "label": "anxious",
+    "confidence": 0.87
+  },
+
+  "interpreted_emotion": {
+    "label": "anxious",
+    "confidence": 0.86,
+    "state": "elevated",
+    "evidence_summary": "Voice tremor and facial tension suggest underlying anxiety despite neutral wording."
+  }
+}`;
 
 const STROKE = { strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
 const channels = [
@@ -26,6 +53,57 @@ const channels = [
 ] as const;
 
 export function NearuVibe() {
+  const codeBlockRef = useRef<HTMLDivElement>(null);
+  const [typedLength, setTypedLength] = useState(0);
+  const [showFullCode, setShowFullCode] = useState(false);
+  const startedRef = useRef(false);
+
+  const typeCode = useCallback(() => {
+    let i = 0;
+    function tick() {
+      if (i < API_RESPONSE_RAW.length) {
+        setTypedLength(i + 1);
+        i++;
+        const delay = API_RESPONSE_RAW[i] === "\n" ? 30 : 18;
+        timeoutRef.current = window.setTimeout(tick, delay);
+      } else {
+        setShowFullCode(true);
+      }
+    }
+    tick();
+  }, []);
+
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const el = codeBlockRef.current;
+    if (!el) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    if (prefersReducedMotion || isMobile) {
+      setShowFullCode(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !startedRef.current) {
+            startedRef.current = true;
+            typeCode();
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [typeCode]);
+
   return (
     <section
       className="relative overflow-hidden py-16 md:py-20"
@@ -104,7 +182,16 @@ export function NearuVibe() {
               <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
               <span className="ml-1 font-mono text-[0.72rem] text-[var(--text-3)]">POST /api/v1/analyze-emotion → response</span>
             </div>
-            <div className="overflow-x-auto p-5 font-mono text-[0.75rem] leading-[1.8]">
+            <div
+              ref={codeBlockRef}
+              className="api-code-block overflow-x-auto p-5 font-mono text-[0.75rem] leading-[1.8]"
+            >
+              {!showFullCode ? (
+                <pre className="whitespace-pre typing-cursor">
+                  {API_RESPONSE_RAW.slice(0, typedLength)}
+                </pre>
+              ) : (
+                <>
               <span className="json-bracket">{"{"}</span>
               <br />
               {"  "}
@@ -197,6 +284,8 @@ export function NearuVibe() {
               <span className="json-bracket">{"}"}</span>
               <br />
               <span className="json-bracket">{"}"}</span>
+                </>
+              )}
             </div>
           </div>
         </Reveal>

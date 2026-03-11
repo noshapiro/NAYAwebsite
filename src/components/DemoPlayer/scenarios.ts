@@ -37,7 +37,7 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
           labels: [...EMOTION_9_LABELS],
           colors: [...EMOTION_9_COLORS],
           verdictHtml:
-            "Hesitant cadence + self-doubt markers → <strong>ANXIETY</strong> detected. Activating reassurance mode.",
+            "NearuVibe™: hesitant cadence + self-doubt markers + low confidence → <strong class=\"verdict-alert\">ANXIETY / ADJUSTMENT STRESS</strong> detected. Activating reassurance mode.",
           pill: "Anxious • 88%",
           pillStyle: {
             background: "var(--accent-12)",
@@ -117,12 +117,12 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
           labels: [...EMOTION_9_LABELS],
           colors: [...EMOTION_9_COLORS],
           verdictHtml:
-            "Trembling voice + slowed speech → <strong>DISTRESS / OVERWHELM</strong> detected. Gentle support mode activated.",
+            "Trembling voice + slowed speech → <strong class=\"verdict-alert\">DISTRESS / OVERWHELM</strong> detected. Gentle support mode activated.",
           pill: "Distressed • 85%",
           pillStyle: {
-            background: "var(--accent-12)",
-            border: "1px solid var(--accent-25)",
-            color: "var(--accent)",
+            background: "rgba(249, 115, 22, 0.12)",
+            border: "1px solid #f97316",
+            color: "#f97316",
           },
         },
       },

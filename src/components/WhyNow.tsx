@@ -188,7 +188,7 @@ export function WhyNow() {
               borderColor: "rgba(255, 255, 255, 0.07)",
             }}
           >
-            <p className="mx-auto max-w-[680px] text-[1.05rem] italic leading-[1.75] text-[var(--text-2)]">
+            <p className="mx-auto max-w-[680px] text-[1.05rem] leading-[1.75] text-[var(--text-2)]">
               The shift from <strong className="font-semibold text-[var(--text-2)]">functional AI</strong> to{" "}
               <strong className="font-semibold text-[var(--text)]">relational AI</strong> is the defining product transition of this decade.{" "}
               <strong className="font-semibold text-[var(--text)]">Empathy</strong> is becoming the{" "}

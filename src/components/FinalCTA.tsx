@@ -22,7 +22,18 @@ export function FinalCTA() {
           <h2 className="text-[clamp(2.4rem,4vw,4rem)] font-extrabold tracking-[-0.03em]">
             AI shouldn&apos;t feel like a tool.
             <br />
-            It should feel like someone.
+            It should feel like{" "}
+            <span
+              className="bg-clip-text bg-[length:120%_120%] bg-center bg-no-repeat"
+              style={{
+                backgroundImage: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              someone
+            </span>
+            .
           </h2>
         </Reveal>
         <Reveal>

@@ -79,7 +79,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative bg-[var(--bg)] pb-20 pt-[100px]" style={{ overflow: "visible" }}>
+    <section className="relative bg-[var(--bg)] pb-28 pt-[100px] md:pb-32" style={{ overflow: "visible" }}>
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

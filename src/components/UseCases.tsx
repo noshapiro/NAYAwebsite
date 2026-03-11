@@ -52,7 +52,7 @@ const cases = [
     image: "/use-cases/healthcare.png",
     label: "Healthcare",
     title: "Mental Health & Care",
-    body: "EQ layer for remote diagnostic agents — detecting emotional distress and escalating to human care when needed. Empathy at machine scale.",
+    body: "EQ layer for remote diagnostic agents — detecting emotional distress and escalating to human care when needed.",
     outcome: "Safer remote care · ↑ Patient trust",
   },
   {
@@ -76,7 +76,7 @@ const cases = [
     image: "/use-cases/automotive.png",
     label: "Automotive",
     title: "In-Car Voice Assistants",
-    body: "Emotion-aware voice AI for the cabin — detects driver stress, fatigue, or frustration and adapts tone and suggestions. Keeps interactions calm and focused for safer, more natural driving.",
+    body: "Emotion-aware voice AI for the cabin — detects driver stress, fatigue, or frustration and adapts suggestions. Keeps interactions calm and focused for safer driving.",
     outcome: "↑ Driver focus · Safer interactions",
   },
 ] as const;
