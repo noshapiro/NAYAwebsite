@@ -39,7 +39,7 @@ export function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
-    <section className="bg-[var(--bg-2)]" id="faq">
+    <section className="bg-[var(--bg)]" id="faq">
       <div className="container">
         <Reveal className="text-center">
           <div className="flex flex-col items-center">

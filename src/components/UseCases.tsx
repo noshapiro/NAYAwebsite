@@ -142,7 +142,7 @@ export function UseCases() {
   const [carouselPaused, setCarouselPaused] = useState(false);
 
   return (
-    <section className="overflow-hidden bg-[var(--bg-2)] py-16 md:py-20" id="use-cases">
+    <section className="overflow-hidden bg-[var(--bg)] py-16 md:py-20" id="use-cases">
       <div className="container">
         <Reveal className="text-center">
           <div className="flex flex-col items-center">

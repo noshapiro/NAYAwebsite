@@ -133,9 +133,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden pb-20 pt-[100px]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_70%_50%,var(--accent-08)_0%,transparent_70%),radial-gradient(ellipse_50%_80%_at_20%_50%,var(--accent-08)_0%,transparent_60%)]" />
-
+    <section className="relative overflow-hidden bg-[var(--bg)] pb-20 pt-[100px]">
       <div className="container relative z-[1]">
         <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-[1.12fr_0.88fr] md:gap-[50px]">
           <Reveal>

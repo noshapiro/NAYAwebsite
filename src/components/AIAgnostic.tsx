@@ -52,7 +52,7 @@ function ModelLogo({ m }: { m: (typeof MODELS)[number] }) {
 
 export function AIAgnostic() {
   return (
-    <section className="bg-[var(--bg-2)]" id="models">
+    <section className="bg-[var(--bg)]" id="models">
       <div className="container">
         <Reveal className="text-center">
           <div className="flex flex-col items-center">

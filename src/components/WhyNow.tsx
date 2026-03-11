@@ -29,7 +29,7 @@ const TIMELINE = [
 
 export function WhyNow() {
   return (
-    <section className="bg-[var(--bg-2)]" id="why-now">
+    <section className="bg-[var(--bg)]" id="why-now">
       <div className="container">
         {/* Label + accent line */}
         <Reveal className="flex flex-col items-center text-center">
@@ -82,7 +82,7 @@ export function WhyNow() {
                 >
                   {/* Timeline dot */}
                   <div className="relative z-10 flex h-5 w-full items-center justify-center">
-                    {t.current ? (
+                    {("current" in t && t.current) ? (
                       <motion.div
                         className="relative flex h-3 w-3 items-center justify-center rounded-full bg-[var(--accent)]"
                         initial={{ boxShadow: "0 0 0 0 var(--accent-35)" }}
@@ -109,12 +109,12 @@ export function WhyNow() {
                   <div
                     className={[
                       "mt-4 w-full rounded-[12px] border p-5 text-left",
-                      t.current
+                      ("current" in t && t.current)
                         ? "border-[var(--accent)] bg-[var(--surface)]"
                         : "border-[var(--border)] bg-[var(--surface)]",
                     ].join(" ")}
                     style={
-                      t.current
+                      ("current" in t && t.current)
                         ? {
                             boxShadow: "0 0 24px var(--accent-15)",
                           }
@@ -124,7 +124,7 @@ export function WhyNow() {
                     <div
                       className="mb-2 text-[0.7rem] font-medium uppercase tracking-[0.08em]"
                       style={
-                        t.current
+                        ("current" in t && t.current)
                           ? { color: "var(--accent)", fontWeight: 700 }
                           : { color: "var(--text-3)" }
                       }
@@ -137,7 +137,7 @@ export function WhyNow() {
                     <ul className="mt-3 space-y-1.5 text-[0.75rem] text-[var(--text-2)]">
                       {t.traits.map((tr) => (
                         <li key={tr} className="flex items-start gap-2">
-                          {t.current ? (
+                          {("current" in t && t.current) ? (
                             <>
                               <span
                                 className="mt-0.5 shrink-0 text-[var(--green)]"

@@ -12,7 +12,7 @@ export function SoulEngine() {
   ] as const;
 
   return (
-    <section className="bg-[var(--bg-2)]" id="solution">
+    <section className="bg-[var(--bg)]" id="solution">
       <div className="container">
         <Reveal className="grid grid-cols-1 items-start gap-14 md:grid-cols-2 md:gap-20">
           <div>

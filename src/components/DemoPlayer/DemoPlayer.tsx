@@ -221,7 +221,7 @@ export function DemoPlayer() {
                     className={[
                       "inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-[0.8rem] font-semibold transition",
                       active
-                        ? "border-[var(--accent-30)] bg-[var(--accent-12)] text-[var(--text)]"
+                        ? "border-white/15 bg-[var(--surface)] text-[var(--text)]"
                         : "border-white/10 bg-[var(--surface)] text-[var(--text-3)] hover:border-white/15 hover:text-[var(--text-2)]",
                     ].join(" ")}
                   >
@@ -235,17 +235,11 @@ export function DemoPlayer() {
           <div className="mt-6 grid items-start gap-4 lg:grid-cols-[1fr_300px]">
             <div>
               <div className="overflow-hidden rounded-[20px] border border-white/15 bg-[var(--surface)]">
-                <div className="grid grid-cols-1 border-b border-white/10 md:grid-cols-2">
-                  <div className="flex items-center gap-2 border-white/10 bg-white/[0.02] px-4 py-2.5 md:border-r">
-                    <span className="rounded bg-white/5 px-2 py-0.5 text-[0.6rem] font-extrabold uppercase tracking-[0.08em] text-[var(--text-3)]">
-                      Without Nearu
-                    </span>
+                <div className="grid grid-cols-1 border-b border-white/10 bg-[var(--surface)] md:grid-cols-2">
+                  <div className="flex items-center gap-2 border-white/10 px-4 py-2.5 md:border-r">
                     <span className="text-[0.78rem] font-bold text-[var(--text-2)]">Standard AI Agent</span>
                   </div>
-                  <div className="flex items-center gap-2 border-white/10 bg-white/[0.02] px-4 py-2.5 md:border-l">
-                    <span className="rounded bg-[var(--accent-20)] px-2 py-0.5 text-[0.6rem] font-extrabold uppercase tracking-[0.08em] text-[var(--accent)]">
-                      With Nearu
-                    </span>
+                  <div className="flex items-center gap-2 border-white/10 px-4 py-2.5 md:border-l">
                     <span className="text-[0.78rem] font-bold text-[var(--text)]">{scenario.agentName}</span>
                   </div>
                 </div>
@@ -278,10 +272,10 @@ export function DemoPlayer() {
                           >
                             <div
                               className={[
-                                "rounded-[12px] border border-white/10 px-3 py-2.5 text-[0.8rem] leading-[1.6]",
+                                "max-w-[520px] rounded-[12px] px-4 py-3.5 text-[0.8rem] leading-[1.6]",
                                 m.role === "user"
-                                  ? "bg-[#e5e7eb] text-[#1f2937]"
-                                  : "bg-[#e5e7eb] text-[#1f2937] [&_.ehw]:font-bold [&_.ehw]:text-[var(--accent)]",
+                                  ? "border border-[rgba(255,255,255,0.05)] bg-[#0F1724] text-[#DCE6F5]"
+                                  : "border border-[rgba(120,160,255,0.18)] bg-[rgba(35,48,75,0.45)] text-[#CFE3FF] [&_.ehw]:font-medium [&_.ehw]:text-[#63B3FF]",
                               ].join(" ")}
                             >
                               {m.html}
@@ -316,8 +310,8 @@ export function DemoPlayer() {
                       </div>
                       <div>
                         <div className="text-[0.75rem] font-bold leading-[1.2]">{scenario.agentName}</div>
-                        <div className="flex items-center gap-1 text-[0.62rem] text-[var(--green)]">
-                          <span className="h-1 w-1 animate-pulse rounded-full bg-[var(--green)]" />
+                        <div className="flex items-center gap-1.5 text-[0.62rem] text-[var(--text-2)]">
+                          <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[var(--green)]" />
                           NearuVibe™ monitoring
                         </div>
                       </div>
@@ -339,10 +333,10 @@ export function DemoPlayer() {
                           >
                             <div
                               className={[
-                                "rounded-[12px] border border-white/10 px-3 py-2.5 text-[0.8rem] leading-[1.6]",
+                                "max-w-[520px] rounded-[12px] px-4 py-3.5 text-[0.8rem] leading-[1.6]",
                                 m.role === "user"
-                                  ? "bg-[#e5e7eb] text-[#1f2937]"
-                                  : "bg-[#e5e7eb] text-[#1f2937] [&_.ehw]:font-bold [&_.ehw]:text-[var(--accent)]",
+                                  ? "border border-[rgba(255,255,255,0.05)] bg-[#0F1724] text-[#DCE6F5]"
+                                  : "border border-[rgba(120,160,255,0.18)] bg-[rgba(35,48,75,0.45)] text-[#CFE3FF] [&_.ehw]:font-medium [&_.ehw]:text-[#63B3FF]",
                               ].join(" ")}
                               dangerouslySetInnerHTML={{ __html: m.html }}
                             />
@@ -369,7 +363,7 @@ export function DemoPlayer() {
                 </div>
 
                 {/* Controls */}
-                <div className="flex items-center gap-3 border-t border-white/10 bg-[var(--bg-2)] px-4 py-3.5">
+                <div className="flex items-center gap-3 border-t border-white/10 bg-[var(--surface)] px-4 py-3.5">
                   <button
                     type="button"
                     onClick={playFull}
@@ -433,10 +427,17 @@ export function DemoPlayer() {
 
             {/* EQ panel */}
             <div className="sticky top-20 overflow-hidden rounded-[20px] border border-white/15 bg-[var(--surface)]">
-              <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.02] px-4 py-3">
-                <span className="h-[6px] w-[6px] animate-pulse rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent-40)]" />
-                <span className="text-[0.7rem] font-extrabold uppercase tracking-[0.06em] text-[var(--text-2)]">
-                  NearuVibe™ Live
+              <div className="flex flex-wrap items-center justify-end gap-2 border-b border-white/10 bg-[var(--surface)] px-4 py-3">
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-medium"
+                  style={{
+                    background: "rgba(30,40,60,0.6)",
+                    color: "#6BB8FF",
+                    border: "1px solid rgba(90,160,255,0.25)",
+                    boxShadow: "0 0 12px rgba(90,160,255,0.12)",
+                  }}
+                >
+                  NearuVibe™ monitoring
                 </span>
               </div>
 

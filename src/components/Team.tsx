@@ -75,7 +75,7 @@ function PersonColumn({
           href={(person as (typeof people)[number]).linkedinUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex flex-col items-center outline-none focus:ring-2 focus:ring-[#00d4ff] focus:ring-offset-2 focus:ring-offset-[#060810]"
+          className="inline-flex flex-col items-center outline-none focus:ring-2 focus:ring-[#00d4ff] focus:ring-offset-2 focus:ring-offset-[var(--bg)]"
           aria-label={`${person.name} on LinkedIn`}
         >
           <div className="relative mb-7 h-20 w-20 shrink-0 overflow-hidden rounded-full grayscale-[20%] transition-[filter] duration-300 group-hover:grayscale-0">
@@ -142,7 +142,7 @@ function PersonColumn({
 
 export function Team() {
   return (
-    <section className="relative bg-[#060810] py-[120px]" id="team">
+    <section className="relative bg-[var(--bg)] py-[120px]" id="team">
       {/* Horizontal hairline */}
       <div
         className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2"
