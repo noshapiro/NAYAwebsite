@@ -1,35 +1,35 @@
 @import "tailwindcss";
 
-/* Reference design: LiveKit-style — dark grey/black, blue-teal accent, clean sans-serif */
+/* Platform UI — dark gray theme, warm neutral */
 
 :root {
   --font-head: var(--font-inter), "Inter", system-ui, sans-serif;
   --font-body: var(--font-inter), "Inter", system-ui, sans-serif;
-  /* Backgrounds: very dark grey/black */
-  --bg: #0D0D0F;
-  --bg-2: #141416;
-  --bg-3: #1A1A1C;
-  --surface: #1A1A1C;
-  --surface-2: #252528;
+  /* Backgrounds — warm dark gray */
+  --bg: #0e0e0e;
+  --bg-2: #141414;
+  --bg-3: #1a1a1a;
+  --surface: #1a1a1a;
+  --surface-2: #1e1e1e;
   --border: rgba(255, 255, 255, 0.08);
-  --border-bright: rgba(255, 255, 255, 0.12);
-  /* Accent: blue-teal like reference */
-  --accent: #00AEEF;
-  --accent-glow: rgba(0, 174, 239, 0.35);
-  --accent-2: #38bdf8;
-  --accent-08: rgba(0, 174, 239, 0.08);
-  --accent-12: rgba(0, 174, 239, 0.12);
-  --accent-15: rgba(0, 174, 239, 0.15);
-  --accent-20: rgba(0, 174, 239, 0.2);
-  --accent-25: rgba(0, 174, 239, 0.25);
-  --accent-30: rgba(0, 174, 239, 0.3);
-  --accent-35: rgba(0, 174, 239, 0.35);
-  --accent-40: rgba(0, 174, 239, 0.4);
-  /* Text */
-  --text: #ffffff;
-  --text-2: #a1a1aa;
-  --text-3: #71717a;
-  /* Semantic */
+  --border-bright: rgba(255, 255, 255, 0.14);
+  /* Accent — brighter cyan-blue (platform active state) */
+  --accent: #2D9CDB;
+  --accent-glow: rgba(45, 156, 219, 0.3);
+  --accent-2: #5B8DEF;
+  --accent-08: rgba(45, 156, 219, 0.08);
+  --accent-12: rgba(45, 156, 219, 0.12);
+  --accent-15: rgba(45, 156, 219, 0.15);
+  --accent-20: rgba(45, 156, 219, 0.2);
+  --accent-25: rgba(45, 156, 219, 0.25);
+  --accent-30: rgba(45, 156, 219, 0.3);
+  --accent-35: rgba(45, 156, 219, 0.35);
+  --accent-40: rgba(45, 156, 219, 0.4);
+  /* Text — slightly warmer white */
+  --text: #F5F5F5;
+  --text-2: rgba(245, 245, 245, 0.55);
+  --text-3: rgba(245, 245, 245, 0.3);
+  /* Status colors — unchanged */
   --green: #22D3A5;
   --yellow: #FBBF24;
   --red: #F87171;
@@ -51,6 +51,7 @@ html {
 
 body {
   margin: 0;
+  background: #0e0e0e;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);

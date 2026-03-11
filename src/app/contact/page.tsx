@@ -1,11 +1,9 @@
 "use client";
 
 import { MapPin, Mail } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
-const LOGO_PATH = "/logo.png";
+import { Navbar } from "@/components/Navbar";
 
 const INQUIRY_OPTIONS = [
   "Select an inquiry type",
@@ -16,8 +14,10 @@ const INQUIRY_OPTIONS = [
   "Other",
 ] as const;
 
+const INPUT_FOCUS =
+  "focus:border-[#3B82F6] focus:outline-none focus:ring-0 focus:shadow-[0_0_0_3px_rgba(59,130,246,0.1)]";
+
 export default function ContactPage() {
-  const [logoError, setLogoError] = useState(false);
   const [fullName, setFullName] = useState("");
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
@@ -34,87 +34,90 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[var(--bg)]">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[rgba(5,5,8,0.9)] py-4 backdrop-blur-[20px]">
-        <div className="container flex items-center justify-between">
-          <Link href="/" className="flex items-center">
-            {!logoError ? (
-              <Image
-                src={LOGO_PATH}
-                alt="Nearu"
-                width={60}
-                height={16}
-                className="h-4 w-auto object-contain object-left"
-                unoptimized
-                onError={() => setLogoError(true)}
-              />
-            ) : (
-              <span className="flex items-center gap-1 font-[var(--font-head)] text-[0.7rem] font-extrabold tracking-[-0.04em] text-[var(--text)]">
-                <span className="h-1 w-1 rounded-full bg-[var(--accent)] shadow-[0_0_6px_var(--accent)]" />
-                NEARU
-              </span>
-            )}
-          </Link>
-          <Link
-            href="/"
-            className="text-[0.875rem] font-semibold text-[var(--text-2)] transition hover:text-[var(--text)]"
-          >
-            ← Back
-          </Link>
-        </div>
-      </header>
-
-      <div className="container pt-16 pb-20 md:pt-24 md:pb-28">
-        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-20">
-          {/* Left column — contact info */}
+    <div className="min-h-screen flex flex-col bg-[var(--bg)]">
+      <Navbar />
+      <main className="flex-1 flex items-center justify-center px-6 py-20">
+        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left side */}
           <div>
-            <div className="label mb-2 block">Contact</div>
-            <h1 className="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-[-0.03em] text-white">
+            <div
+              className="text-[11px] font-semibold uppercase tracking-[0.3em]"
+              style={{ color: "#3B82F6" }}
+            >
+              CONTACT
+            </div>
+            <div
+              className="mt-3 h-0.5 w-8 rounded-full"
+              style={{ background: "linear-gradient(90deg, #3B82F6, transparent)" }}
+            />
+            <h1 className="mt-6 text-[clamp(2rem,4vw,3rem)] font-black tracking-[-0.03em] text-white">
               Start a Conversation
             </h1>
-            <p className="mt-4 text-[1rem] leading-[1.75] text-[var(--text-2)]">
+            <p className="mt-4 text-[1rem] leading-[1.7] text-[var(--text-2)]">
               Whether you&apos;re exploring a technology partnership, R&D collaboration, or investment opportunity — we&apos;d like to hear from you.
             </p>
 
             <div className="mt-10 space-y-6">
               <div className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-[var(--surface-2)]">
-                  <MapPin className="h-5 w-5 text-[var(--accent)]" strokeWidth={1.5} />
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border"
+                  style={{
+                    background: "rgba(59,130,246,0.1)",
+                    borderColor: "rgba(59,130,246,0.2)",
+                  }}
+                >
+                  <MapPin className="h-5 w-5" style={{ color: "#3B82F6" }} strokeWidth={1.5} />
                 </div>
                 <div>
-                  <div className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-3)]">
+                  <div className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]">
                     Location
                   </div>
-                  <div className="mt-1 text-[0.9rem] text-[var(--text-2)]">
+                  <div className="mt-1.5 text-[0.9rem] text-white">
                     169 Madison Ave STE 78337, New York, NY
                   </div>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-[var(--surface-2)]">
-                  <Mail className="h-5 w-5 text-[var(--accent)]" strokeWidth={1.5} />
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border"
+                  style={{
+                    background: "rgba(59,130,246,0.1)",
+                    borderColor: "rgba(59,130,246,0.2)",
+                  }}
+                >
+                  <Mail className="h-5 w-5" style={{ color: "#3B82F6" }} strokeWidth={1.5} />
                 </div>
                 <div>
-                  <div className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-3)]">
+                  <div className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]">
                     Email
                   </div>
-                  <a
+                  <Link
                     href="mailto:noa@nnearu.com"
-                    className="mt-1 block text-[0.9rem] text-[var(--accent)] transition hover:underline"
+                    className="mt-1.5 block text-[0.9rem] text-white transition hover:underline"
                   >
                     noa@nnearu.com
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right column — form card */}
-          <div className="rounded-[20px] border border-white/10 bg-[var(--surface)] p-6 shadow-xl md:p-8">
+          {/* Right side — form card */}
+          <div
+            className="rounded-[20px] border p-9"
+            style={{
+              background: "#1a1a1a",
+              borderColor: "rgba(255,255,255,0.08)",
+            }}
+          >
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="fullname" className="block text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-3)]">
+                  <label
+                    htmlFor="fullname"
+                    className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
+                    style={{ marginBottom: 6 }}
+                  >
                     Full name
                   </label>
                   <input
@@ -123,11 +126,19 @@ export default function ContactPage() {
                     placeholder="Your name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="mt-1.5 w-full rounded-md border border-white/15 bg-[var(--bg-2)] px-4 py-3 text-[0.95rem] text-[var(--text)] placeholder:text-[var(--text-3)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                    className={`w-full rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] placeholder:text-[rgba(255,255,255,0.4)] ${INPUT_FOCUS}`}
+                    style={{
+                      background: "#0e0e0e",
+                      borderColor: "rgba(255,255,255,0.1)",
+                    }}
                   />
                 </div>
                 <div>
-                  <label htmlFor="company" className="block text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-3)]">
+                  <label
+                    htmlFor="company"
+                    className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
+                    style={{ marginBottom: 6 }}
+                  >
                     Company
                   </label>
                   <input
@@ -136,13 +147,21 @@ export default function ContactPage() {
                     placeholder="Organization"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
-                    className="mt-1.5 w-full rounded-md border border-white/15 bg-[var(--bg-2)] px-4 py-3 text-[0.95rem] text-[var(--text)] placeholder:text-[var(--text-3)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                    className={`w-full rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] placeholder:text-[rgba(255,255,255,0.4)] ${INPUT_FOCUS}`}
+                    style={{
+                      background: "#0e0e0e",
+                      borderColor: "rgba(255,255,255,0.1)",
+                    }}
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="role" className="block text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-3)]">
+                <label
+                  htmlFor="role"
+                  className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
+                  style={{ marginBottom: 6 }}
+                >
                   Role (optional)
                 </label>
                 <input
@@ -151,19 +170,31 @@ export default function ContactPage() {
                   placeholder="Your role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="mt-1.5 w-full rounded-md border border-white/15 bg-[var(--bg-2)] px-4 py-3 text-[0.95rem] text-[var(--text)] placeholder:text-[var(--text-3)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                  className={`w-full rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] placeholder:text-[rgba(255,255,255,0.4)] ${INPUT_FOCUS}`}
+                  style={{
+                    background: "#0e0e0e",
+                    borderColor: "rgba(255,255,255,0.1)",
+                  }}
                 />
               </div>
 
               <div>
-                <label htmlFor="inquiry" className="block text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-3)]">
+                <label
+                  htmlFor="inquiry"
+                  className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
+                  style={{ marginBottom: 6 }}
+                >
                   Inquiry type
                 </label>
                 <select
                   id="inquiry"
                   value={inquiryType}
                   onChange={(e) => setInquiryType(e.target.value)}
-                  className="mt-1.5 w-full appearance-none rounded-md border border-white/15 bg-[var(--bg-2)] px-4 py-3 text-[0.95rem] text-[var(--text)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)] [&>option]:bg-[var(--surface-2)]"
+                  className={`w-full appearance-none rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] ${INPUT_FOCUS}`}
+                  style={{
+                    background: "#0e0e0e",
+                    borderColor: "rgba(255,255,255,0.1)",
+                  }}
                 >
                   {INQUIRY_OPTIONS.map((opt) => (
                     <option key={opt} value={opt === "Select an inquiry type" ? "" : opt}>
@@ -174,29 +205,36 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-3)]">
+                <label
+                  htmlFor="message"
+                  className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
+                  style={{ marginBottom: 6 }}
+                >
                   Message
                 </label>
                 <textarea
                   id="message"
-                  rows={5}
                   placeholder="Tell us about your application or interest area."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="mt-1.5 w-full resize-y rounded-md border border-white/15 bg-[var(--bg-2)] px-4 py-3 text-[0.95rem] text-[var(--text)] placeholder:text-[var(--text-3)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                  className={`min-h-[120px] w-full resize-y rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] placeholder:text-[rgba(255,255,255,0.4)] ${INPUT_FOCUS}`}
+                  style={{
+                    background: "#0e0e0e",
+                    borderColor: "rgba(255,255,255,0.1)",
+                  }}
                 />
               </div>
 
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--accent)] px-6 py-3.5 text-[0.95rem] font-semibold text-white shadow-[0_0_20px_var(--accent-glow)] transition hover:opacity-90 hover:translate-y-[-1px]"
+                className="w-full rounded-[10px] bg-[#3B82F6] py-3.5 text-[0.95rem] font-extrabold text-white transition hover:opacity-90"
               >
                 Send Message →
               </button>
             </form>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

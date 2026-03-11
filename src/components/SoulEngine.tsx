@@ -12,8 +12,8 @@ export function SoulEngine() {
   ] as const;
 
   return (
-    <section className="bg-[var(--bg)]" id="solution">
-      <div className="container">
+    <section className="relative overflow-hidden bg-[#111111]" id="solution">
+      <div className="container relative z-10">
         <Reveal className="grid grid-cols-1 items-start gap-14 md:grid-cols-2 md:gap-20">
           <div>
             <div className="label">Our Solution</div>

@@ -25,15 +25,33 @@ function getLinkedInEmbedId(linkedInUrl: string): string | null {
 const LINKEDIN_EMBED_BASE = "https://www.linkedin.com/embed/feed/update/urn:li:share:";
 const LINKEDIN_EMBED_PARAMS = "?collapsed=1";
 
+const LOGO_PATH = "/logo.png";
+
 export default function NewsPage() {
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+  const [logoError, setLogoError] = useState(false);
 
   return (
     <main className="min-h-screen bg-[var(--bg)]">
       <header className="border-b border-white/10 bg-[rgba(5,5,8,0.85)] py-4 backdrop-blur-[20px]">
         <div className="container flex items-center justify-between">
-          <Link href="/" className="font-[var(--font-head)] text-[1.2rem] font-extrabold tracking-[-0.04em] text-[var(--text)]">
-            NEARU
+          <Link href="/" className="flex items-center">
+            {!logoError ? (
+              <Image
+                src={LOGO_PATH}
+                alt="Nearu"
+                width={60}
+                height={16}
+                className="h-4 w-auto object-contain object-left"
+                unoptimized
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <span className="flex items-center gap-1 font-[var(--font-head)] text-[1.2rem] font-extrabold tracking-[-0.04em] text-[var(--text)]">
+                <span className="h-1 w-1 rounded-full bg-[var(--accent)] shadow-[0_0_6px_var(--accent)]" />
+                NEARU
+              </span>
+            )}
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
             <Link href="/" className="text-[0.875rem] font-medium text-[var(--text-2)] transition hover:text-[var(--text)]">
@@ -51,7 +69,7 @@ export default function NewsPage() {
           href="/"
           className="inline-block text-[0.85rem] font-medium text-[var(--text-2)] transition hover:text-[var(--accent)]"
         >
-          ← Back to Home
+          &lt; Back to Home
         </Link>
 
         <div className="mx-auto mt-8 max-w-[720px] text-center">

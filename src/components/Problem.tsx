@@ -26,8 +26,15 @@ const cards = [
 
 export function Problem() {
   return (
-    <section className="bg-[var(--bg)]" id="problem">
-      <div className="container">
+    <section className="relative overflow-hidden bg-[#111111]" id="problem">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(15,30,65,0.35) 0%, transparent 65%)",
+        }}
+      />
+      <div className="container relative z-10">
         <Reveal className="text-center">
           <div className="flex flex-col items-center">
             <div className="label">The Problem</div>

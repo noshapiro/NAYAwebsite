@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -17,13 +19,15 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [logoError, setLogoError] = useState(false);
+  const pathname = usePathname();
+  const isContactPage = pathname === "/contact";
 
   return (
     <motion.nav
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-      className="sticky top-0 z-[100] border-b border-[var(--border)] bg-[var(--bg)]/95 py-3.5 backdrop-blur-[20px]"
+      className="sticky top-0 z-[100] border-b border-[var(--border)] bg-[#111111] py-3.5 backdrop-blur-[20px]"
     >
         <div className="container flex items-center justify-between">
           {/* Слева: лого + пункты меню с шевроном (структура как LiveKit) */}
@@ -63,20 +67,31 @@ export function Navbar() {
             </ul>
           </div>
 
-          {/* Справа: вторичная кнопка + основная кнопка (как Contact sales / Start building) */}
+          {/* Справа: на Contact — Back; иначе CTA кнопки */}
           <div className="flex items-center gap-3">
-            <a
-              href="/contact"
-              className="hidden items-center gap-2 rounded-md border border-[var(--border-bright)] bg-transparent px-4 py-2 text-[0.875rem] font-medium text-[var(--text)] transition hover:border-white/20 hover:bg-white/5 sm:inline-flex"
-            >
-              Request Demo
-            </a>
-            <a
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2 text-[0.875rem] font-semibold text-white shadow-[0_0_20px_var(--accent-glow)] transition hover:opacity-90 hover:shadow-[0_0_24px_var(--accent-glow)]"
-            >
-              Start Building
-            </a>
+            {isContactPage ? (
+              <Link
+                href="/"
+                className="text-[0.85rem] text-[rgba(255,255,255,0.5)] transition hover:text-white"
+              >
+                ← Back
+              </Link>
+            ) : (
+              <>
+                <a
+                  href="/contact"
+                  className="hidden items-center gap-2 rounded-md border border-[var(--border-bright)] bg-transparent px-4 py-2 text-[0.875rem] font-medium text-[var(--text)] transition hover:border-white/20 hover:bg-white/5 sm:inline-flex"
+                >
+                  Request Demo
+                </a>
+                <a
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2 text-[0.875rem] font-semibold text-white shadow-[0_0_20px_var(--accent-glow)] transition hover:opacity-90 hover:shadow-[0_0_24px_var(--accent-glow)]"
+                >
+                  Start Building
+                </a>
+              </>
+            )}
           </div>
         </div>
     </motion.nav>

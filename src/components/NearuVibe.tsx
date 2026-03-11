@@ -27,8 +27,8 @@ const channels = [
 
 export function NearuVibe() {
   return (
-    <section className="bg-[var(--bg)]" id="nearuvibe">
-      <div className="container">
+    <section className="relative overflow-hidden bg-[#111111]" id="nearuvibe">
+      <div className="container relative z-10">
         <Reveal className="mb-12 text-left">
           <div className="label">Technology</div>
           <div className="divider-line" />
@@ -73,7 +73,10 @@ export function NearuVibe() {
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-[var(--radius-lg)] border border-white/15 bg-[#08080f]">
+          <div
+            className="overflow-hidden rounded-[var(--radius-lg)]"
+            style={{ background: "#111111", border: "1px solid rgba(255,255,255,0.07)" }}
+          >
             <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.02] px-4 py-3">
               <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />

@@ -68,7 +68,7 @@ function PersonColumn({
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.07 }}
-      className={`group relative flex w-[280px] min-w-[280px] flex-col items-center border-l border-white/[0.06] py-10 px-8 text-center transition-colors hover:bg-white/[0.02] ${index === 4 ? "border-r border-white/[0.06]" : ""}`}
+      className="group relative flex w-[280px] min-w-[280px] flex-col items-center py-10 px-8 text-center transition-colors hover:bg-white/[0.02]"
     >
       {isPerson ? (
         <a
@@ -78,20 +78,39 @@ function PersonColumn({
           className="inline-flex flex-col items-center outline-none focus:ring-2 focus:ring-[#00d4ff] focus:ring-offset-2 focus:ring-offset-[var(--bg)]"
           aria-label={`${person.name} on LinkedIn`}
         >
-          <div className="relative mb-7 h-20 w-20 shrink-0 overflow-hidden rounded-full grayscale-[20%] transition-[filter] duration-300 group-hover:grayscale-0">
+          <div
+            className="relative mb-7 flex shrink-0 items-center justify-center grayscale-[20%] transition-[filter] duration-300 group-hover:grayscale-0"
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, #1a2035 0%, #0e0e14 100%)",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
             {!imgError ? (
-              <Image
-                src={avatarSrc}
-                alt={person.name}
-                fill
-                className="object-cover"
-                sizes="80px"
-                unoptimized
-                onError={() => setImgError(true)}
-              />
+              <div
+                className="relative overflow-hidden rounded-full"
+                style={{
+                  width: 100,
+                  height: 100,
+                  border: "2px solid rgba(100,160,255,0.3)",
+                  boxShadow: "0 0 20px rgba(59,130,246,0.2), 0 0 0 1px rgba(59,130,246,0.1)",
+                }}
+              >
+                <Image
+                  src={avatarSrc}
+                  alt={person.name}
+                  fill
+                  className="object-cover object-top"
+                  sizes="100px"
+                  unoptimized
+                  onError={() => setImgError(true)}
+                />
+              </div>
             ) : (
               <div
-                className={`flex h-full w-full items-center justify-center text-xl font-extrabold text-white ${(person as (typeof people)[number]).bg}`}
+                className={`flex h-[100px] w-[100px] items-center justify-center rounded-full text-xl font-extrabold text-white ${(person as (typeof people)[number]).bg}`}
               >
                 {(person as (typeof people)[number]).initials}
               </div>
@@ -103,19 +122,38 @@ function PersonColumn({
         </a>
       ) : (
         <>
-          <div className="relative mb-7 h-20 w-20 shrink-0 overflow-hidden rounded-full grayscale-[20%] transition-[filter] duration-300 group-hover:grayscale-0">
+          <div
+            className="relative mb-7 flex shrink-0 items-center justify-center grayscale-[20%] transition-[filter] duration-300 group-hover:grayscale-0"
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, #1a2035 0%, #0e0e14 100%)",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
             {!imgError ? (
-              <Image
-                src={avatarSrc}
-                alt={person.name}
-                fill
-                className="object-cover"
-                sizes="80px"
-                unoptimized
-                onError={() => setImgError(true)}
-              />
+              <div
+                className="relative overflow-hidden rounded-full"
+                style={{
+                  width: 100,
+                  height: 100,
+                  border: "2px solid rgba(100,160,255,0.3)",
+                  boxShadow: "0 0 20px rgba(59,130,246,0.2), 0 0 0 1px rgba(59,130,246,0.1)",
+                }}
+              >
+                <Image
+                  src={avatarSrc}
+                  alt={person.name}
+                  fill
+                  className="object-cover object-top"
+                  sizes="100px"
+                  unoptimized
+                  onError={() => setImgError(true)}
+                />
+              </div>
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-xl font-extrabold text-white bg-[linear-gradient(135deg,var(--accent),var(--accent-2))]">
+              <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full text-xl font-extrabold text-white bg-[linear-gradient(135deg,var(--accent),var(--accent-2))]">
                 N
               </div>
             )}
@@ -142,16 +180,16 @@ function PersonColumn({
 
 export function Team() {
   return (
-    <section className="relative bg-[var(--bg)] py-[120px]" id="team">
-      {/* Horizontal hairline */}
+    <section className="relative overflow-hidden bg-[#0e0e0e] py-[120px]" id="team">
+      {/* Subtle radial glow — matches CTA/hero atmospheric feel */}
       <div
-        className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.15), transparent)",
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(15,30,60,0.4) 0%, transparent 65%)",
         }}
       />
-
-      <div className="container flex flex-col items-center">
+      <div className="container relative z-10 flex flex-col items-center">
         {/* Header — centered, same label + divider as other sections */}
         <div className="flex flex-col items-center text-center">
           <div

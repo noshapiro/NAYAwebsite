@@ -142,8 +142,15 @@ export function UseCases() {
   const [carouselPaused, setCarouselPaused] = useState(false);
 
   return (
-    <section className="overflow-hidden bg-[var(--bg)] py-16 md:py-20" id="use-cases">
-      <div className="container">
+    <section className="relative overflow-hidden bg-[var(--bg)] py-16 md:py-20" id="use-cases">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(15,30,65,0.35) 0%, transparent 65%)",
+        }}
+      />
+      <div className="container relative z-10">
         <Reveal className="text-center">
           <div className="flex flex-col items-center">
             <div className="label">Use Cases</div>

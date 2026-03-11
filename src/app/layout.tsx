@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${syne.variable}`}>
-      <body className="antialiased font-[var(--font-inter)]">
+      <body className="antialiased font-[var(--font-inter)] bg-[#0e0e0e]" style={{ backgroundColor: "#0e0e0e" }}>
         {children}
       </body>
     </html>

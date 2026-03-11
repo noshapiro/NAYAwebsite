@@ -3,7 +3,14 @@
 import { motion } from "framer-motion";
 import { Reveal } from "./Reveal";
 
-const TIMELINE = [
+type TimelineItem = {
+  era: string;
+  name: string;
+  traits: readonly string[];
+  current?: true;
+};
+
+const TIMELINE: TimelineItem[] = [
   {
     era: "2000s – 2010s",
     name: "Intelligent Tool",
@@ -25,12 +32,19 @@ const TIMELINE = [
     traits: ["Stable identity", "Emotional responsiveness", "Trust, retention, bonding"],
     current: true,
   },
-] as const;
+];
 
 export function WhyNow() {
   return (
-    <section className="bg-[var(--bg)]" id="why-now">
-      <div className="container">
+    <section className="relative overflow-hidden bg-[var(--bg)]" id="why-now">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(15,30,65,0.35) 0%, transparent 65%)",
+        }}
+      />
+      <div className="container relative z-10">
         {/* Label + accent line */}
         <Reveal className="flex flex-col items-center text-center">
           <div
@@ -82,7 +96,7 @@ export function WhyNow() {
                 >
                   {/* Timeline dot */}
                   <div className="relative z-10 flex h-5 w-full items-center justify-center">
-                    {("current" in t && t.current) ? (
+                    {t.current ? (
                       <motion.div
                         className="relative flex h-3 w-3 items-center justify-center rounded-full bg-[var(--accent)]"
                         initial={{ boxShadow: "0 0 0 0 var(--accent-35)" }}
@@ -108,23 +122,25 @@ export function WhyNow() {
                   {/* Card */}
                   <div
                     className={[
-                      "mt-4 w-full rounded-[12px] border p-5 text-left",
-                      ("current" in t && t.current)
-                        ? "border-[var(--accent)] bg-[var(--surface)]"
-                        : "border-[var(--border)] bg-[var(--surface)]",
+                      "mt-4 w-full rounded-[12px] border p-5 text-left backdrop-blur-[8px]",
+                      !t.current && "transition hover:bg-[rgba(255,255,255,0.055)]",
                     ].join(" ")}
                     style={
-                      ("current" in t && t.current)
+                      t.current
                         ? {
-                            boxShadow: "0 0 24px var(--accent-15)",
+                            background: "rgba(45, 156, 219, 0.06)",
+                            borderColor: "rgba(45, 156, 219, 0.25)",
                           }
-                        : undefined
+                        : {
+                            background: "rgba(255, 255, 255, 0.03)",
+                            borderColor: "rgba(255, 255, 255, 0.07)",
+                          }
                     }
                   >
                     <div
                       className="mb-2 text-[0.7rem] font-medium uppercase tracking-[0.08em]"
                       style={
-                        ("current" in t && t.current)
+                        t.current
                           ? { color: "var(--accent)", fontWeight: 700 }
                           : { color: "var(--text-3)" }
                       }
@@ -137,7 +153,7 @@ export function WhyNow() {
                     <ul className="mt-3 space-y-1.5 text-[0.75rem] text-[var(--text-2)]">
                       {t.traits.map((tr) => (
                         <li key={tr} className="flex items-start gap-2">
-                          {("current" in t && t.current) ? (
+                          {t.current ? (
                             <>
                               <span
                                 className="mt-0.5 shrink-0 text-[var(--green)]"
@@ -165,7 +181,13 @@ export function WhyNow() {
 
         {/* Insight quote block */}
         <Reveal delay={0.25} className="mt-12">
-          <blockquote className="rounded-[12px] border border-[var(--border)] bg-[var(--surface)] px-6 py-6 text-center">
+          <blockquote
+            className="rounded-[12px] border px-6 py-6 text-center backdrop-blur-[8px]"
+            style={{
+              background: "rgba(255, 255, 255, 0.03)",
+              borderColor: "rgba(255, 255, 255, 0.07)",
+            }}
+          >
             <p className="mx-auto max-w-[680px] text-[1.05rem] italic leading-[1.75] text-[var(--text-2)]">
               The shift from <strong className="font-semibold text-[var(--text-2)]">functional AI</strong> to{" "}
               <strong className="font-semibold text-[var(--text)]">relational AI</strong> is the defining product transition of this decade.{" "}

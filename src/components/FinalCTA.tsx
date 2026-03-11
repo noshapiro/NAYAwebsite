@@ -5,7 +5,15 @@ import { Reveal } from "./Reveal";
 export function FinalCTA() {
   return (
     <section className="relative overflow-hidden bg-[var(--bg)]">
-      <div className="container relative z-[1] text-center">
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(20,40,80,0.6) 0%, rgba(10,20,50,0.3) 40%, transparent 70%)",
+        }}
+        aria-hidden
+      />
+      <div className="container relative z-10 text-center">
         <Reveal className="flex flex-col items-center">
           <div className="label">Get Involved</div>
           <div className="divider-line" />

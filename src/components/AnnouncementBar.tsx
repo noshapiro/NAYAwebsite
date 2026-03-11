@@ -8,7 +8,8 @@ export function AnnouncementBar() {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="border-b border-[var(--border)] bg-[linear-gradient(90deg,var(--accent-15),var(--accent-12))] py-2 text-center text-[0.82rem] text-[var(--text-2)]"
+      className="border-b py-2 text-center text-[0.82rem] text-[var(--text-2)]"
+      style={{ background: "#161616", borderBottom: "1px solid rgba(255,255,255,0.07)" }}
     >
       <span className="mr-[10px] inline-block h-[6px] w-[6px] animate-pulse rounded-full bg-[var(--green)] align-middle shadow-[0_0_8px_var(--green)]" />
       We&apos;re raising our Seed Round.
