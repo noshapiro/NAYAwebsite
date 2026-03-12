@@ -1,9 +1,6 @@
 # Favicon not updating on Vercel?
 
-1. **Clear Vercel build cache:** In Vercel Dashboard → your project → **Settings** → **General** → scroll to **Build Cache** → next deployment, turn **off** "Use existing build cache" (or use **Redeploy** and check "Clear build cache" when redeploying).
+The app uses `public/favicon.png` and wires it in `layout.tsx` (metadata + `<head>` links with `?v=2` cache-buster).
 
-2. **Redeploy** the project (Deployments → ... → Redeploy).
-
-3. **Hard refresh** the site (Cmd+Shift+R) or open in an incognito window — browsers cache favicons heavily.
-
-The app uses `src/app/icon.png` and links in layout; `/favicon.ico` is rewritten to the same icon.
+1. **Clear Vercel build cache:** Redeploy with "Clear build cache" enabled.
+2. **Hard refresh** (Cmd+Shift+R) or open in incognito — browsers cache favicons heavily.

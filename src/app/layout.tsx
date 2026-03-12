@@ -10,9 +10,9 @@ export const metadata: Metadata = {
   title: "Nearu — The Emotional Intelligence Layer for AI Agents",
   description: "Nearu — The Emotional Intelligence Layer for AI Agents",
   icons: {
-    icon: [{ url: "/icon.png", type: "image/png", sizes: "32x32" }],
-    shortcut: "/icon.png",
-    apple: "/icon.png",
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
   },
 };
 
@@ -24,9 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${syne.variable} ${playfair.variable}`}>
       <head>
-        <link rel="icon" href="/icon.png" type="image/png" sizes="32x32" />
-        <link rel="shortcut icon" href="/icon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/icon.png" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
       <body className="antialiased font-[var(--font-inter)] bg-[#0e0e0e]" style={{ backgroundColor: "#0e0e0e" }}>
         {children}

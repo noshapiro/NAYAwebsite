@@ -4,11 +4,7 @@
   "buildCommand": "next build",
   "headers": [
     {
-      "source": "/icon.png",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
-    },
-    {
-      "source": "/favicon.ico",
+      "source": "/favicon.png",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
     }
   ]
