@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   title: "Nearu — The Emotional Intelligence Layer for AI Agents",
   description: "Nearu — The Emotional Intelligence Layer for AI Agents",
   icons: {
-    icon: "/favicon.png",
+    icon: ["/favicon.png"],
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
   },
 };
 
