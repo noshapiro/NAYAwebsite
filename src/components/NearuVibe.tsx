@@ -147,26 +147,6 @@ export function NearuVibe() {
                 </div>
               ))}
             </div>
-
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              {[
-                { val: "~1.6s", lbl: "End-to-end latency" },
-                { val: "3", lbl: "Independent channels" },
-                { val: "REST", lbl: "+ WebSocket API" },
-              ].map((b) => (
-                <div
-                  key={b.lbl}
-                  className="min-w-[110px] rounded-[var(--radius)] border px-5 py-3.5 text-center"
-                  style={{
-                    background: "rgba(45, 156, 219, 0.06)",
-                    borderColor: "rgba(45, 156, 219, 0.15)",
-                  }}
-                >
-                  <div className="font-[var(--font-head)] text-[1.3rem] font-extrabold text-[var(--accent)]">{b.val}</div>
-                  <div className="mt-1 text-[0.7rem] text-[var(--text-3)]">{b.lbl}</div>
-                </div>
-              ))}
-            </div>
           </div>
 
           <div
