@@ -23,6 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${syne.variable} ${playfair.variable}`}>
+      <head>
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+      </head>
       <body className="antialiased font-[var(--font-inter)] bg-[#0e0e0e]" style={{ backgroundColor: "#0e0e0e" }}>
         {children}
       </body>
