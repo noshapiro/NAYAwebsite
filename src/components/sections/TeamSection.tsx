@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const TEAM = [
   {
@@ -114,9 +114,28 @@ function TeamCard({
   isNearu?: boolean;
 }) {
   const [imgError, setImgError] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [showMoreHint, setShowMoreHint] = useState(false);
+  const bioRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (expanded) {
+      setShowMoreHint(true);
+      return;
+    }
+    const id = requestAnimationFrame(() => {
+      if (bioRef.current)
+        setShowMoreHint(bioRef.current.scrollHeight > bioRef.current.clientHeight);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [expanded, bio]);
 
   return (
     <article
+      role="button"
+      tabIndex={0}
+      onClick={() => setExpanded(!expanded)}
+      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setExpanded((x) => !x)}
       className="group flex min-h-[200px] w-full cursor-pointer flex-row items-stretch overflow-hidden rounded-xl border border-[#1e1e1e] bg-[#111111] transition-[border-color] duration-150 hover:border-[rgba(0,153,255,0.3)]"
     >
       {/* Photo area (left) — fixed 160px */}
@@ -163,17 +182,38 @@ function TeamCard({
           {role}
         </p>
         <p
-          className="block overflow-visible text-white/65"
-          style={{ fontSize: 12, lineHeight: 1.6, marginBottom: 14 }}
+          ref={bioRef}
+          className={expanded ? "block text-white/65" : "bio-clamp text-white/65"}
+          style={{
+            fontSize: 12,
+            lineHeight: 1.6,
+            marginBottom: 8,
+            ...(expanded && { display: "block", overflow: "visible" }),
+          }}
         >
           {bio}
         </p>
+        {(showMoreHint || expanded) && (
+          <span
+            style={{
+              fontSize: "11px",
+              color: "#0099ff",
+              cursor: "pointer",
+              marginTop: "4px",
+              display: "block",
+              marginBottom: 8,
+            }}
+          >
+            {expanded ? "↑ less" : "↓ more"}
+          </span>
+        )}
         <div
           className="mt-auto flex items-center"
           style={{ gap: 6, paddingTop: 8 }}
         >
           <a
             href={linkedin}
+            onClick={(e) => e.stopPropagation()}
             target={linkedin === "#" ? undefined : "_blank"}
             rel={linkedin === "#" ? undefined : "noopener noreferrer"}
             className={`${socialButtonClass} ${socialButtonHoverClass}`}
@@ -187,6 +227,7 @@ function TeamCard({
               href={twitter}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className={`${socialButtonClass} ${socialButtonHoverClass}`}
               style={socialButtonStyle}
               aria-label="X (Twitter)"
@@ -222,13 +263,6 @@ export function TeamSection() {
           >
             Built by People Who&apos;ve Done This Before
           </h2>
-          <p
-            className="mx-auto mt-4 max-w-[640px] text-center text-[16px] leading-relaxed"
-            style={{ color: "#a0a0a0" }}
-          >
-            A small, senior team that has built, shipped, and scaled technology products before — and
-            is doing it again.
-          </p>
         </header>
 
         {/* Grid — 6 equal cards, 3 per row; stretch so row height matches */}
