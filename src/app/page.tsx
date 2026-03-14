@@ -10,6 +10,8 @@ import { DemoPlayer } from "@/components/DemoPlayer/DemoPlayer";
 import { UseCases } from "@/components/UseCases";
 import { WhyNow } from "@/components/WhyNow";
 import { Competitive } from "@/components/Competitive";
+import { PlatformShowcase } from "@/components/PlatformShowcase";
+import { TeamSection } from "@/components/sections/TeamSection";
 import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
@@ -25,10 +27,12 @@ export default function Home() {
       <NearuVibe />
       <EmotionChannels />
       <AIAgnostic />
+      <PlatformShowcase />
       <DemoPlayer />
       <UseCases />
       <WhyNow />
       <Competitive />
+      <TeamSection />
       <FAQ />
       <FinalCTA />
       <Footer />

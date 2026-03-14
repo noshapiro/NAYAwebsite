@@ -53,7 +53,7 @@ export function WhyNow() {
           >
             WHERE WE&apos;RE HEADED
           </div>
-          <div className="mt-3 h-[2px] w-8 shrink-0 rounded-full bg-[var(--accent)]" />
+          <div className="divider-line" />
         </Reveal>
 
         {/* Title: From Tool to Relationship */}
@@ -61,7 +61,7 @@ export function WhyNow() {
           <h2 className="mt-6 font-[var(--font-syne)] text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.0] tracking-[-0.03em] text-[var(--text)]">
             From Tool to
             <br />
-            <span className="text-[var(--text-2)]">Relationship</span>
+            Relationship
           </h2>
         </Reveal>
 

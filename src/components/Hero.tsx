@@ -1,10 +1,13 @@
 "use client";
 
 import { Check, Pause, Play } from "lucide-react";
-import { motion } from "framer-motion";
 import Image from "next/image";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
+
+const HERO_TOTAL_SECONDS = 134; // 2:14
+const HERO_PROGRESS_TICK_MS = 200;
+const HERO_PROGRESS_TICK = 100 / (HERO_TOTAL_SECONDS * (1000 / HERO_PROGRESS_TICK_MS)); // 100/670 per 200ms
 
 const HERO_VIDEO = "/hero-nearu.mp4";
 const HERO_VIDEO_WEBM = "/hero-nearu.webm";
@@ -15,12 +18,14 @@ function HeroVideo({
   poster,
   onError,
   onPlayingChange,
+  onEnded,
   videoRef,
 }: {
   sources: { src: string; type: string }[];
   poster?: string;
   onError?: () => void;
   onPlayingChange?: (playing: boolean) => void;
+  onEnded?: () => void;
   videoRef: React.RefObject<HTMLVideoElement | null>;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -34,7 +39,10 @@ function HeroVideo({
   );
 
   const handlePlay = useCallback(() => updatePlaying(true), [updatePlaying]);
-  const handleEnded = useCallback(() => updatePlaying(false), [updatePlaying]);
+  const handleEnded = useCallback(() => {
+    updatePlaying(false);
+    onEnded?.();
+  }, [updatePlaying, onEnded]);
   const handlePause = useCallback(() => updatePlaying(false), [updatePlaying]);
 
   return (
@@ -63,10 +71,18 @@ function HeroVideo({
   );
 }
 
+function formatTime(seconds: number) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
 export function Hero() {
   const [avatarMode, setAvatarMode] = useState<"video" | "image" | "placeholder">("video");
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [progress, setProgress] = useState(0); // 0–100, starts empty
   const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const onVideoError = useCallback(() => setAvatarMode("image"), []);
   const onImageError = useCallback(() => setAvatarMode("placeholder"), []);
 
@@ -78,15 +94,36 @@ export function Hero() {
     heroVideoRef.current?.pause();
   }, []);
 
+  // Simulated progress when playing (200ms tick)
+  useEffect(() => {
+    if (!videoPlaying) return;
+    const id = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) return 100;
+        const next = p + HERO_PROGRESS_TICK;
+        return next >= 100 ? 100 : next;
+      });
+    }, HERO_PROGRESS_TICK_MS);
+    return () => clearInterval(id);
+  }, [videoPlaying]);
+
+  const handleProgressBarClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const bar = progressBarRef.current;
+      if (!bar) return;
+      const rect = bar.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      setProgress(percent);
+      const video = heroVideoRef.current;
+      if (video?.duration && Number.isFinite(video.duration)) {
+        video.currentTime = (percent / 100) * video.duration;
+      }
+    },
+    []
+  );
+
   return (
-    <section className="relative bg-[var(--bg)] pb-28 pt-[100px] md:pb-32" style={{ overflow: "visible" }}>
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 60% at 60% 50%, rgba(20,40,80,0.55) 0%, rgba(10,20,50,0.25) 45%, transparent 70%)",
-        }}
-      />
+    <section className="relative pb-28 pt-[100px] md:pb-32" style={{ overflow: "visible", background: "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0, 102, 204, 0.08) 0%, transparent 70%), #0e0e0e" }}>
       <div className="container relative z-10" style={{ overflow: "visible" }}>
         <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-[1.12fr_0.88fr] md:gap-[50px]" style={{ overflow: "visible" }}>
           <Reveal className="overflow-visible">
@@ -97,13 +134,13 @@ export function Hero() {
             <h1 className="mt-6 bg-[linear-gradient(135deg,#fff_40%,rgba(255,255,255,0.6))] bg-clip-text text-[clamp(2.2rem,3.8vw,4rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-transparent">
               The{" "}
               <em
-                className="not-italic bg-clip-text text-transparent"
+                className="not-italic"
                 style={{
-                  backgroundImage: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
-                  backgroundSize: "120% 120%",
-                  backgroundPosition: "center",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  color: "#0099ff",
+                  background: "none",
+                  WebkitBackgroundClip: "unset",
+                  WebkitTextFillColor: "unset",
+                  backgroundClip: "unset",
                 }}
               >
                 Emotional Layer
@@ -118,10 +155,10 @@ export function Hero() {
 
             <div className="mt-9 flex flex-wrap gap-3">
               <a
-                href="#nearuvibe"
+                href="/contact"
                 className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-[0_0_20px_var(--accent-40)] transition hover:translate-y-[-1px] hover:opacity-90 hover:shadow-[0_0_30px_var(--accent-glow)]"
               >
-                Request a Demo
+                Request Demo
               </a>
               <a
                 href="/contact"
@@ -132,7 +169,7 @@ export function Hero() {
             </div>
 
             <div className="mt-10 flex flex-wrap items-center gap-6">
-              {["AI-agnostic", "REST API + WebSocket", "~1.6s latency"].map((t) => (
+              {["AI-agnostic", "REST API + WebSocket"].map((t) => (
                 <div key={t} className="flex items-center gap-1.5 text-[0.78rem] text-[var(--text-3)]">
                   <Check className="h-3.5 w-3.5 shrink-0 text-[var(--green)]" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
                   {t}
@@ -150,8 +187,8 @@ export function Hero() {
                 style={{
                   aspectRatio: "4/5",
                   background: "#1a1a1a",
-                  border: "1px solid rgba(45, 156, 219, 0.35)",
-                  boxShadow: "0 0 0 1px rgba(45, 156, 219, 0.1), 0 0 30px rgba(45, 156, 219, 0.08)",
+                  border: "1px solid rgba(0, 153, 255, 0.35)",
+                  boxShadow: "0 0 0 1px rgba(0, 153, 255, 0.1), 0 0 30px rgba(0, 153, 255, 0.08)",
                 }}
               >
                 {/* Inner clip for video + gradient — overflow hidden only here */}
@@ -167,6 +204,7 @@ export function Hero() {
                     poster={HERO_IMAGE}
                     onError={onVideoError}
                     onPlayingChange={setVideoPlaying}
+                    onEnded={() => setProgress(100)}
                     videoRef={heroVideoRef}
                   />
                 )}
@@ -194,69 +232,110 @@ export function Hero() {
               />
                 </div>
 
-                {/* Player bar — pinned to bottom, same bottom radius as container */}
+                {/* Emotion chip — top-right of avatar */}
                 <div
-                  className="absolute bottom-0 left-0 right-0 z-10 flex flex-col"
+                  className="absolute top-[14px] right-[14px] z-10 flex items-center gap-1.5 rounded-[20px] px-2.5 py-1.5 text-[10px] font-semibold text-[#0099ff]"
+                  style={{
+                    background: "rgba(0,8,18,0.75)",
+                    backdropFilter: "blur(8px)",
+                    border: "1px solid rgba(0,153,255,0.2)",
+                  }}
+                >
+                  <span
+                    className="hero-emotion-dot h-[5px] w-[5px] shrink-0 rounded-full bg-[#22c55e]"
+                    style={{ boxShadow: "0 0 6px rgba(34,197,94,0.6)" }}
+                    aria-hidden
+                  />
+                  Happy · 0.85
+                </div>
+
+                {/* Player bottom panel */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 z-10 flex border-t border-[#1a1a1a] bg-[#111111]"
                   style={{ borderRadius: "0 0 24px 24px" }}
                 >
-                <div
-                  className="flex items-center gap-[14px]"
-                  style={{ padding: "20px 20px 22px" }}
-                >
-                  {avatarMode === "video" ? (
-                    !videoPlaying ? (
-                      <button
-                        type="button"
-                        onClick={handleHeroPlayClick}
-                        className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full text-white transition hover:scale-[1.08] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 focus:ring-offset-[#1a1a1a]"
-                        style={{
-                          background: "#2D9CDB",
-                          boxShadow: "0 0 20px rgba(45,156,219,0.4)",
-                        }}
-                        aria-label="Play video"
-                      >
-                        <Play className="h-4 w-4 shrink-0 fill-current pl-0.5" strokeWidth={2} />
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={handleHeroPauseClick}
-                        className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full text-white transition hover:scale-[1.08] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 focus:ring-offset-[#1a1a1a]"
-                        style={{
-                          background: "#2D9CDB",
-                          boxShadow: "0 0 20px rgba(45,156,219,0.4)",
-                        }}
-                        aria-label="Pause video"
-                      >
-                        <Pause className="h-4 w-4 shrink-0 fill-current" strokeWidth={2} />
-                      </button>
-                    )
-                  ) : (
-                    <div
-                      className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full text-white/50"
-                      style={{ background: "rgba(255,255,255,0.1)" }}
+                  {/* Left — play button (72×74px), clip children, content centered */}
+                  <div
+                    className="group flex h-[74px] w-[72px] shrink-0 cursor-pointer items-center justify-center overflow-hidden border-r border-[#1a1a1a] transition-[background] duration-150 hover:bg-[rgba(0,153,255,0.05)]"
+                    onClick={avatarMode === "video" ? (videoPlaying ? handleHeroPauseClick : handleHeroPlayClick) : undefined}
+                    onKeyDown={(e) => {
+                      if (e.key !== "Enter" && e.key !== " ") return;
+                      e.preventDefault();
+                      if (avatarMode === "video") videoPlaying ? handleHeroPauseClick() : handleHeroPlayClick();
+                    }}
+                    role="button"
+                    tabIndex={avatarMode === "video" ? 0 : -1}
+                    aria-label={videoPlaying ? "Pause" : "Play"}
+                    style={{ position: "relative" }}
+                  >
+                    {/* Pulsing ring — absolute, centered via keyframes */}
+                    <span
+                      className="pointer-events-none absolute left-1/2 top-1/2 rounded-full border border-[rgba(0,153,255,0.25)]"
+                      style={{
+                        width: 44,
+                        height: 44,
+                        transform: "translate(-50%, -50%)",
+                        animation: "hero-ring-out 2s ease-out infinite",
+                      }}
+                      aria-hidden
+                    />
+                    {/* Play circle + icon — position relative, z-index 1 */}
+                    <span
+                      className="relative z-[1] flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-150 group-hover:bg-[rgba(0,153,255,0.2)] group-hover:border-[rgba(0,153,255,0.65)]"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        background: "rgba(0,153,255,0.1)",
+                        borderWidth: "1.5px",
+                        borderColor: "rgba(0,153,255,0.35)",
+                      }}
                     >
-                      <Play className="h-4 w-4 shrink-0 fill-current pl-0.5" strokeWidth={2} />
+                      {avatarMode === "video" && videoPlaying ? (
+                        <Pause className="h-[15px] w-[15px] shrink-0 text-[#0099ff]" strokeWidth={2} fill="currentColor" />
+                      ) : (
+                        <Play
+                          className="h-[15px] w-[15px] shrink-0 text-[#0099ff]"
+                          strokeWidth={2}
+                          fill="currentColor"
+                          style={{ marginLeft: 2 }}
+                        />
+                      )}
+                    </span>
+                  </div>
+
+                  {/* Right — info + timeline, locked height 74px */}
+                  <div
+                    className="flex min-h-[74px] max-h-[74px] min-w-0 flex-1 flex-col justify-center gap-2 px-4 py-[13px]"
+                    style={{ paddingLeft: 16, paddingRight: 16 }}
+                  >
+                    <div className="flex flex-col gap-[2px]">
+                      <div className="text-[13px] font-semibold leading-[1.2] text-[#ffffff]">Meet Nearu</div>
+                      <div className="m-0 text-[11px] leading-[1.2] text-[#555555]">2:14 · Nearu introduces herself</div>
                     </div>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[0.82rem] font-extrabold text-[#F5F5F5]">Meet Nearu</div>
-                    <div className="text-[0.62rem] text-[var(--text-2)] font-[var(--font-body)]">
-                      2:14 · Nearu introduces herself
+                    <div className="flex items-center gap-2">
+                      <div
+                        ref={progressBarRef}
+                        className="h-[3px] flex-1 cursor-pointer overflow-hidden rounded-[2px] bg-[#2a2a2a]"
+                        onClick={handleProgressBarClick}
+                        role="progressbar"
+                        aria-valuenow={progress}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                      >
+                        <div
+                          className="h-full rounded-[2px] bg-[#0099ff]"
+                          style={{ width: `${progress}%`, transition: "width 100ms linear" }}
+                        />
+                      </div>
+                      <span
+                        className="shrink-0 whitespace-nowrap text-[10px] text-[#555555]"
+                        style={{ fontVariantNumeric: "tabular-nums" }}
+                      >
+                        {formatTime(Math.round((progress / 100) * HERO_TOTAL_SECONDS))}
+                      </span>
                     </div>
                   </div>
                 </div>
-                {/* 5. Progress bar — very bottom */}
-                <div className="h-0.5 w-full bg-white/[0.07]">
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: "0%",
-                      background: "linear-gradient(90deg, #2D9CDB, #5B8DEF)",
-                    }}
-                  />
-                </div>
-              </div>
             </div>
             {/* Caption below container */}
             <p

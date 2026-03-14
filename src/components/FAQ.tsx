@@ -35,40 +35,91 @@ const FAQS = [
   },
 ] as const;
 
+function ChevronDown({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      className="shrink-0 transition-transform duration-200 ease-out"
+      style={{
+        color: "#555555",
+        transform: open ? "rotate(180deg)" : "rotate(0deg)",
+      }}
+    >
+      <polyline points="6 9 12 15 18 9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  const handleClick = (i: number) => {
+    setOpenIdx((v) => (v === i ? null : i));
+  };
 
   return (
     <section className="bg-[var(--bg)]" id="faq">
       <div className="container">
         <Reveal className="text-center">
-          <div className="flex flex-col items-center">
-            <div className="label">FAQ</div>
-            <div className="divider-line" />
+          <div
+            className="mb-2.5 font-semibold uppercase tracking-[0.1em]"
+            style={{ fontSize: "11px", color: "#a0a0a0" }}
+          >
+            FAQ
           </div>
-          <h2 className="text-[clamp(2rem,3.5vw,3.2rem)] font-extrabold tracking-[-0.03em]">Frequently Asked Questions</h2>
+          <div className="divider-line" />
+          <h2
+            className="font-bold tracking-tight"
+            style={{ fontSize: "44px", fontWeight: 700 }}
+          >
+            Frequently Asked Questions
+          </h2>
         </Reveal>
 
-        <Reveal className="mx-auto mt-12 max-w-[860px]">
-          <div className="flex flex-col gap-3">
+        <Reveal className="mx-auto mt-12" style={{ maxWidth: 720 }}>
+          <div className="flex flex-col gap-2">
             {FAQS.map((f, i) => {
               const open = openIdx === i;
               return (
-                <div key={f.q} className="overflow-hidden rounded-[16px] border border-white/10 bg-[var(--surface)]">
-                  <button
-                    type="button"
-                    onClick={() => setOpenIdx((v) => (v === i ? null : i))}
-                    className="flex w-full items-center justify-between gap-6 px-5 py-4 text-left"
+                <div
+                  key={f.q}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleClick(i)}
+                  onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && handleClick(i)}
+                  className="cursor-pointer overflow-hidden rounded-xl border transition-colors duration-[150ms]"
+                  style={{
+                    background: open ? "#181818" : "#111111",
+                    borderColor: open ? "#2a2a2a" : "#1e1e1e",
+                    marginBottom: 8,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "#181818";
+                    e.currentTarget.style.borderColor = "#2a2a2a";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!open) {
+                      e.currentTarget.style.background = "#111111";
+                      e.currentTarget.style.borderColor = "#1e1e1e";
+                    }
+                  }}
+                >
+                  <div
+                    className="flex w-full items-center justify-between bg-transparent px-5 py-4"
+                    style={{ padding: "16px 20px" }}
                   >
-                    <span className="text-[0.95rem] font-semibold text-[var(--text)]">{f.q}</span>
-                    <motion.span
-                      className="text-[1.1rem] font-bold text-[var(--text-3)]"
-                      animate={{ rotate: open ? 45 : 0 }}
-                      transition={{ duration: 0.2 }}
+                    <span
+                      className="text-left font-semibold"
+                      style={{ fontSize: 14, color: "#ffffff" }}
                     >
-                      +
-                    </motion.span>
-                  </button>
+                      {f.q}
+                    </span>
+                    <ChevronDown open={open} />
+                  </div>
 
                   <AnimatePresence initial={false}>
                     {open && (
@@ -76,9 +127,21 @@ export function FAQ() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                        className="overflow-hidden border-t border-[#1a1a1a] pt-3.5"
+                        style={{
+                          paddingLeft: 20,
+                          paddingRight: 20,
+                          paddingBottom: 16,
+                          paddingTop: 14,
+                        }}
                       >
-                        <div className="px-5 pb-5 text-[0.9rem] leading-[1.75] text-[var(--text-2)]">{f.a}</div>
+                        <p
+                          className="leading-[1.65]"
+                          style={{ fontSize: 14, color: "#a0a0a0" }}
+                        >
+                          {f.a}
+                        </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -91,4 +154,3 @@ export function FAQ() {
     </section>
   );
 }
-

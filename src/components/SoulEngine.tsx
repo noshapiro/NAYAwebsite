@@ -12,10 +12,10 @@ export function SoulEngine() {
   ] as const;
 
   return (
-    <section className="relative overflow-hidden bg-[#111111]" id="solution">
+    <section className="relative overflow-hidden" id="solution" style={{ background: "radial-gradient(ellipse 60% 70% at 30% 50%, rgba(0, 102, 204, 0.07) 0%, transparent 60%), #0e0e0e" }}>
       <div className="container relative z-10">
         <Reveal className="grid grid-cols-1 items-start gap-14 md:grid-cols-2 md:gap-20">
-          <div>
+          <div className="soul-engine-header">
             <div className="label">Our Solution</div>
             <div className="divider-line" />
             <h2 className="text-[clamp(2rem,3.5vw,3.2rem)] font-extrabold tracking-[-0.03em]">

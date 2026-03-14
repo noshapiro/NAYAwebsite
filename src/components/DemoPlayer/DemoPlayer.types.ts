@@ -13,12 +13,12 @@ export const EMOTION_9_LABELS = [
 
 /** Bar colors per emotion: blue = calm/safe, orange = alert, red = critical */
 export const EMOTION_9_COLORS = [
-  "#38bdf8",   /* Calmness */
+  "#0099ff",   /* Calmness */
   "#f97316",   /* Anxiety */
   "#fb923c",   /* Frustration */
   "rgba(251, 146, 60, 0.6)",   /* Sadness */
   "#ef4444",   /* Anger */
-  "#38bdf8",   /* Confidence */
+  "#0099ff",   /* Confidence */
   "#60a5fa",   /* Engagement */
   "#818cf8",   /* Surprise */
   "#475569",   /* Boredom */
@@ -32,7 +32,7 @@ export const EMOTION_BADGE_COLORS: Record<string, string> = {
   Frustrated: "#fb923c",
   Sad: "#f59e0b",
   Angry: "#ef4444",
-  Calm: "#38bdf8",
+  Calm: "#0099ff",
   Confident: "#34d399",
   Engaged: "#60a5fa",
   Surprised: "#818cf8",

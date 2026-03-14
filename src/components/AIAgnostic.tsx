@@ -70,7 +70,7 @@ export function AIAgnostic() {
     <section
       className="py-16 md:py-20"
       id="models"
-      style={{ background: "linear-gradient(to bottom, #0e0e0e 0%, #0a0a0a 100%)" }}
+      style={{ background: "linear-gradient(to bottom, #0e0e0e 0%, #111111 100%)" }}
     >
       <div className="container">
         <Reveal className="text-center">

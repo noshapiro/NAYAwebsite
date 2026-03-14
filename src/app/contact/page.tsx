@@ -14,12 +14,15 @@ const INQUIRY_OPTIONS = [
   "Other",
 ] as const;
 
-const INPUT_FOCUS =
-  "focus:border-[#3B82F6] focus:outline-none focus:ring-0 focus:shadow-[0_0_0_3px_rgba(59,130,246,0.1)]";
+const inputBase =
+  "w-full rounded-lg border border-[#2a2a2a] bg-[#181818] px-3.5 py-2.5 text-[14px] text-white outline-none transition-[border-color] duration-150 placeholder:text-[#555] focus:border-[#0099ff] focus:bg-[#1a1a1a] font-[inherit]";
+const labelBase =
+  "mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#555555]";
 
 export default function ContactPage() {
   const [fullName, setFullName] = useState("");
   const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [inquiryType, setInquiryType] = useState("");
   const [message, setMessage] = useState("");
@@ -28,7 +31,7 @@ export default function ContactPage() {
     e.preventDefault();
     const subject = encodeURIComponent(`Contact: ${inquiryType || "General"} — ${company || "No company"}`);
     const body = encodeURIComponent(
-      `Name: ${fullName}\nCompany: ${company}\nRole: ${role}\nInquiry: ${inquiryType}\n\nMessage:\n${message}`
+      `Name: ${fullName}\nCompany: ${company}\nEmail: ${email}\nRole: ${role}\nInquiry: ${inquiryType}\n\nMessage:\n${message}`
     );
     window.location.href = `mailto:noa@nnearu.com?subject=${subject}&body=${body}`;
   };
@@ -36,64 +39,70 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg)]">
       <Navbar />
-      <main className="flex-1 flex items-center justify-center px-6 py-20">
-        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left side */}
-          <div>
+      <main className="flex-1 flex items-center justify-center px-6">
+        <div
+          className="mx-auto grid w-full max-w-[1000px] grid-cols-1 items-center lg:grid-cols-[1fr_1.2fr]"
+          style={{ padding: "96px 24px", gap: 64 }}
+        >
+          {/* Left side — text, vertically centered with form */}
+          <div className="contact-page-header">
             <div
-              className="text-[11px] font-semibold uppercase tracking-[0.3em]"
-              style={{ color: "#3B82F6" }}
+              className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#a0a0a0]"
+              style={{ marginBottom: 8 }}
             >
               CONTACT
             </div>
-            <div
-              className="mt-3 h-0.5 w-8 rounded-full"
-              style={{ background: "linear-gradient(90deg, #3B82F6, transparent)" }}
-            />
-            <h1 className="mt-6 text-[clamp(2rem,4vw,3rem)] font-black tracking-[-0.03em] text-white">
+            <div className="divider-line" />
+            <h1
+              className="font-bold text-white"
+              style={{ fontSize: 40, lineHeight: 1.1, marginBottom: 16 }}
+            >
               Start a Conversation
             </h1>
-            <p className="mt-4 text-[1rem] leading-[1.7] text-[var(--text-2)]">
+            <p
+              className="text-[#a0a0a0]"
+              style={{ fontSize: 15, lineHeight: 1.65, marginBottom: 36 }}
+            >
               Whether you&apos;re exploring a technology partnership, R&D collaboration, or investment opportunity — we&apos;d like to hear from you.
             </p>
 
-            <div className="mt-10 space-y-6">
-              <div className="flex gap-4">
+            <div className="flex flex-col gap-4" style={{ gap: 16 }}>
+              <div className="flex items-start gap-3">
                 <div
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border"
-                  style={{
-                    background: "rgba(59,130,246,0.1)",
-                    borderColor: "rgba(59,130,246,0.2)",
-                  }}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#1e1e1e] bg-[#111111]"
+                  style={{ width: 36, height: 36 }}
                 >
-                  <MapPin className="h-5 w-5" style={{ color: "#3B82F6" }} strokeWidth={1.5} />
+                  <MapPin className="h-4 w-4 shrink-0 text-[#0099ff]" strokeWidth={1.5} size={16} />
                 </div>
                 <div>
-                  <div className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]">
+                  <div
+                    className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#555555]"
+                    style={{ marginBottom: 2 }}
+                  >
                     Location
                   </div>
-                  <div className="mt-1.5 text-[0.9rem] text-white">
+                  <div className="text-[14px] text-[#a0a0a0]">
                     169 Madison Ave STE 78337, New York, NY
                   </div>
                 </div>
               </div>
-              <div className="flex gap-4">
+              <div className="flex items-start gap-3">
                 <div
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border"
-                  style={{
-                    background: "rgba(59,130,246,0.1)",
-                    borderColor: "rgba(59,130,246,0.2)",
-                  }}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#1e1e1e] bg-[#111111]"
+                  style={{ width: 36, height: 36 }}
                 >
-                  <Mail className="h-5 w-5" style={{ color: "#3B82F6" }} strokeWidth={1.5} />
+                  <Mail className="h-4 w-4 shrink-0 text-[#0099ff]" strokeWidth={1.5} size={16} />
                 </div>
                 <div>
-                  <div className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]">
+                  <div
+                    className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#555555]"
+                    style={{ marginBottom: 2 }}
+                  >
                     Email
                   </div>
                   <Link
                     href="mailto:noa@nnearu.com"
-                    className="mt-1.5 block text-[0.9rem] text-white transition hover:underline"
+                    className="text-[14px] text-[#a0a0a0] transition hover:text-white hover:underline"
                   >
                     noa@nnearu.com
                   </Link>
@@ -102,22 +111,15 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Right side — form card */}
+          {/* Right side — form */}
           <div
-            className="rounded-[20px] border p-9"
-            style={{
-              background: "#1a1a1a",
-              borderColor: "rgba(255,255,255,0.08)",
-            }}
+            className="rounded-2xl border border-[#1e1e1e] bg-[#111111] p-7"
+            style={{ padding: "28px 28px 24px", borderRadius: 16 }}
           >
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <form onSubmit={handleSubmit} className="flex flex-col">
+              <div className="grid grid-cols-2 gap-3" style={{ marginBottom: 16 }}>
                 <div>
-                  <label
-                    htmlFor="fullname"
-                    className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
-                    style={{ marginBottom: 6 }}
-                  >
+                  <label htmlFor="fullname" className={labelBase}>
                     Full name
                   </label>
                   <input
@@ -126,19 +128,11 @@ export default function ContactPage() {
                     placeholder="Your name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className={`w-full rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] placeholder:text-[rgba(255,255,255,0.4)] ${INPUT_FOCUS}`}
-                    style={{
-                      background: "#0e0e0e",
-                      borderColor: "rgba(255,255,255,0.1)",
-                    }}
+                    className={inputBase}
                   />
                 </div>
                 <div>
-                  <label
-                    htmlFor="company"
-                    className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
-                    style={{ marginBottom: 6 }}
-                  >
+                  <label htmlFor="company" className={labelBase}>
                     Company
                   </label>
                   <input
@@ -147,21 +141,29 @@ export default function ContactPage() {
                     placeholder="Organization"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
-                    className={`w-full rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] placeholder:text-[rgba(255,255,255,0.4)] ${INPUT_FOCUS}`}
-                    style={{
-                      background: "#0e0e0e",
-                      borderColor: "rgba(255,255,255,0.1)",
-                    }}
+                    className={inputBase}
                   />
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="role"
-                  className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
-                  style={{ marginBottom: 6 }}
-                >
+              <div style={{ marginBottom: 16 }}>
+                <label htmlFor="email" className={labelBase}>
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={inputBase}
+                  required
+                />
+              </div>
+
+              <div style={{ marginBottom: 16 }}>
+                <label htmlFor="role" className={labelBase}>
                   Role (optional)
                 </label>
                 <input
@@ -170,46 +172,37 @@ export default function ContactPage() {
                   placeholder="Your role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className={`w-full rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] placeholder:text-[rgba(255,255,255,0.4)] ${INPUT_FOCUS}`}
-                  style={{
-                    background: "#0e0e0e",
-                    borderColor: "rgba(255,255,255,0.1)",
-                  }}
-                />
+                  className={inputBase}
+                  />
               </div>
 
-              <div>
-                <label
-                  htmlFor="inquiry"
-                  className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
-                  style={{ marginBottom: 6 }}
-                >
+              <div style={{ marginBottom: 16 }}>
+                <label htmlFor="inquiry" className={labelBase}>
                   Inquiry type
                 </label>
-                <select
-                  id="inquiry"
-                  value={inquiryType}
-                  onChange={(e) => setInquiryType(e.target.value)}
-                  className={`w-full appearance-none rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] ${INPUT_FOCUS}`}
-                  style={{
-                    background: "#0e0e0e",
-                    borderColor: "rgba(255,255,255,0.1)",
-                  }}
-                >
-                  {INQUIRY_OPTIONS.map((opt) => (
-                    <option key={opt} value={opt === "Select an inquiry type" ? "" : opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
+                <div>
+                  <select
+                    id="inquiry"
+                    value={inquiryType}
+                    onChange={(e) => setInquiryType(e.target.value)}
+                    className={`${inputBase} appearance-none pr-10`}
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 14px center",
+                    }}
+                  >
+                    {INQUIRY_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt === "Select an inquiry type" ? "" : opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.35)]"
-                  style={{ marginBottom: 6 }}
-                >
+              <div style={{ marginBottom: 16 }}>
+                <label htmlFor="message" className={labelBase}>
                   Message
                 </label>
                 <textarea
@@ -217,17 +210,18 @@ export default function ContactPage() {
                   placeholder="Tell us about your application or interest area."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className={`min-h-[120px] w-full resize-y rounded-[10px] border px-3.5 py-3 text-[0.88rem] text-[#f0f0ff] placeholder:text-[rgba(255,255,255,0.4)] ${INPUT_FOCUS}`}
+                  className={`${inputBase} min-h-[120px] resize-y`}
                   style={{
-                    background: "#0e0e0e",
-                    borderColor: "rgba(255,255,255,0.1)",
+                    lineHeight: 1.6,
+                    minHeight: 120,
                   }}
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full rounded-[10px] bg-[#3B82F6] py-3.5 text-[0.95rem] font-extrabold text-white transition hover:opacity-90"
+                className="mt-2 w-full rounded-lg border-0 bg-[#0099ff] py-3 px-6 text-[14px] font-medium text-white transition-colors duration-150 hover:bg-[#0077cc]"
+                style={{ marginTop: 8 }}
               >
                 Send Message →
               </button>

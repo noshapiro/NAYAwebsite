@@ -4,15 +4,7 @@ import { Reveal } from "./Reveal";
 
 export function FinalCTA() {
   return (
-    <section className="relative overflow-hidden bg-[var(--bg)]">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(20,40,80,0.6) 0%, rgba(10,20,50,0.3) 40%, transparent 70%)",
-        }}
-        aria-hidden
-      />
+    <section className="relative overflow-hidden" style={{ background: "radial-gradient(ellipse 70% 80% at 50% 50%, rgba(0, 102, 204, 0.12) 0%, transparent 65%), #0e0e0e" }}>
       <div className="container relative z-10 text-center">
         <Reveal className="flex flex-col items-center">
           <div className="label">Get Involved</div>
@@ -46,7 +38,7 @@ export function FinalCTA() {
             href="/contact"
             className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-8 py-4 text-[1rem] font-semibold text-white shadow-[0_0_22px_var(--accent-glow)] transition hover:translate-y-[-1px] hover:opacity-90"
           >
-            Request a Demo
+            Request Demo
           </a>
           <a
             href="/contact"

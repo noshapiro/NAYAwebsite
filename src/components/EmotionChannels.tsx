@@ -66,112 +66,82 @@ const SEMANTIC_WORDS = [
   { word: "fine.", tag: "MASKING" },
 ];
 
-const WAVE_LAYERS = [
-  { y: 0.35, amp: 0.12, freq: 0.018, speed: 0.7, color: [56, 189, 248], alpha: 0.9 },
-  { y: 0.52, amp: 0.15, freq: 0.026, speed: 1.0, color: [56, 189, 248], alpha: 0.55 },
-  { y: 0.68, amp: 0.1, freq: 0.038, speed: 1.35, color: [99, 165, 247], alpha: 0.35 },
-  { y: 0.8, amp: 0.08, freq: 0.052, speed: 1.7, color: [167, 139, 250], alpha: 0.2 },
-];
+const BAR_COUNT = 48;
 
-function AcousticVisual() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+function AcousticEqualizer() {
+  const barsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const animRef = useRef<number>(0);
+  const heightsRef = useRef<number[]>(Array(BAR_COUNT).fill(0.15));
+  const targetsRef = useRef<number[]>(Array(BAR_COUNT).fill(0.3));
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !container || !ctx) return;
-
-    const canvasEl: HTMLCanvasElement = canvas;
-    const containerEl: HTMLDivElement = container;
-    const context: CanvasRenderingContext2D = ctx;
-
-    let t = 0;
-    let raf: number;
-    let w = 0;
-    let h = 0;
-
-    function resize() {
-      const dpr = typeof window !== "undefined" ? window.devicePixelRatio ?? 1 : 1;
-      const rect = containerEl.getBoundingClientRect();
-      w = Math.floor(rect.width);
-      h = Math.floor(rect.height);
-      canvasEl.width = w * dpr;
-      canvasEl.height = h * dpr;
-      canvasEl.style.width = `${w}px`;
-      canvasEl.style.height = `${h}px`;
-    }
-
-    function draw() {
-      if (w <= 0 || h <= 0) {
-        raf = requestAnimationFrame(draw);
+    const animate = () => {
+      if (typeof document !== "undefined" && document.hidden) {
+        animRef.current = requestAnimationFrame(animate);
         return;
       }
-      const dpr = typeof window !== "undefined" ? window.devicePixelRatio ?? 1 : 1;
-      context.save();
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      context.clearRect(0, 0, w, h);
-      context.restore();
-
-      context.save();
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      WAVE_LAYERS.forEach((l) => {
-        const baseY = h * l.y;
-        const amp = h * l.amp;
-
-        context.beginPath();
-        context.moveTo(0, baseY);
-        for (let x = 0; x <= w; x += 2) {
-          const y =
-            baseY +
-            Math.sin(x * l.freq + t * l.speed) * amp +
-            Math.sin(x * l.freq * 2.1 + t * l.speed * 0.6) * amp * 0.35;
-          context.lineTo(x, y);
+      heightsRef.current = heightsRef.current.map((h, i) => {
+        const t = targetsRef.current[i]!;
+        const next = h + (t - h) * 0.08;
+        if (Math.abs(next - t) < 0.01) {
+          const isCenter = i > 16 && i < 32;
+          const isEdge = i < 8 || i > 40;
+          const min = isEdge ? 0.05 : isCenter ? 0.3 : 0.1;
+          const max = isEdge ? 0.4 : isCenter ? 1.0 : 0.65;
+          targetsRef.current[i] = min + Math.random() * (max - min);
         }
-        context.lineTo(w, h);
-        context.lineTo(0, h);
-        context.closePath();
-        const grad = context.createLinearGradient(0, baseY - amp, 0, h);
-        grad.addColorStop(0, `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${l.alpha * 0.18})`);
-        grad.addColorStop(1, "rgba(0,0,0,0)");
-        context.fillStyle = grad;
-        context.fill();
-
-        context.beginPath();
-        for (let x = 0; x <= w; x += 2) {
-          const y =
-            baseY +
-            Math.sin(x * l.freq + t * l.speed) * amp +
-            Math.sin(x * l.freq * 2.1 + t * l.speed * 0.6) * amp * 0.35;
-          x === 0 ? context.moveTo(x, y) : context.lineTo(x, y);
-        }
-        context.strokeStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${l.alpha})`;
-        context.lineWidth = 2;
-        context.lineJoin = "round";
-        context.stroke();
+        const el = barsRef.current[i];
+        if (el) el.style.transform = `scaleY(${next})`;
+        return next;
       });
-
-      context.restore();
-      t += 0.012;
-      raf = requestAnimationFrame(draw);
-    }
-
-    resize();
-    const ro = new ResizeObserver(() => resize());
-    ro.observe(containerEl);
-
-    draw();
-    return () => {
-      cancelAnimationFrame(raf);
-      ro.disconnect();
+      animRef.current = requestAnimationFrame(animate);
     };
+    animRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animRef.current);
   }, []);
 
   return (
-    <div ref={containerRef} className="h-full w-full min-h-[200px]">
-      <canvas ref={canvasRef} className="block h-full w-full" />
+    <div
+      className="relative flex h-full min-h-[200px] w-full flex-col justify-between overflow-hidden rounded-xl border"
+      style={{
+        background: "#0d1520",
+        borderColor: "#1a2a3a",
+        padding: "16px 20px 14px",
+      }}
+    >
+      <div
+        className="absolute left-5 top-4 font-mono text-[10px] tracking-[0.06em]"
+        style={{ color: "rgba(0, 153, 255, 0.6)" }}
+      >
+        ACOUSTIC · LIVE INPUT
+      </div>
+
+      <div
+        className="flex flex-1 items-end justify-center gap-[3px] pt-7 pb-1"
+        style={{ padding: "28px 4px 4px" }}
+      >
+        {Array.from({ length: BAR_COUNT }, (_, i) => {
+          const isCenter = i > 16 && i < 32;
+          const isEdge = i < 8 || i > 40;
+          const opacity = isCenter ? 0.95 : isEdge ? 0.45 : 0.65;
+          return (
+            <div
+              key={i}
+              ref={(el) => { barsRef.current[i] = el; }}
+              className="shrink-0 rounded-t"
+              style={{
+                width: 6,
+                height: "100%",
+                borderRadius: "3px 3px 0 0",
+                transformOrigin: "bottom",
+                background: "linear-gradient(to top, #0066cc, #00aaff)",
+                opacity,
+                transform: `scaleY(${heightsRef.current[i] ?? 0.15})`,
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -197,7 +167,7 @@ function SemanticVisual() {
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className={item.tag ? "text-[#38bdf8] font-semibold break-words whitespace-normal" : "text-[var(--text-2)] break-words whitespace-normal"}
+                className={item.tag ? "text-[#0099ff] font-semibold break-words whitespace-normal" : "text-[var(--text-2)] break-words whitespace-normal"}
               >
                 {item.word}
               </motion.span>
@@ -207,7 +177,7 @@ function SemanticVisual() {
             <motion.span
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="absolute -top-6 text-[0.65rem] font-bold uppercase tracking-wider text-[#38bdf8]"
+              className="absolute -top-6 text-[0.65rem] font-bold uppercase tracking-wider text-[#0099ff]"
             >
               {item.tag}
             </motion.span>
@@ -256,8 +226,9 @@ export function EmotionChannels() {
 
   return (
     <section
-      className="relative overflow-hidden bg-transparent py-16 md:py-20"
+      className="relative overflow-hidden py-16 md:py-20"
       id="emotion-channels"
+      style={{ background: "radial-gradient(ellipse 50% 60% at 50% 40%, rgba(0, 102, 204, 0.07) 0%, transparent 60%), #0e0e0e" }}
     >
       <div className="container relative z-10">
         <Reveal className="emotion-channels-header mb-10 text-center">
@@ -302,7 +273,7 @@ export function EmotionChannels() {
                       className="flex items-center gap-[10px] text-[0.85rem] text-[var(--text-2)]"
                     >
                       <span
-                        style={{ color: "#38bdf8", opacity: 0.8, flexShrink: 0 }}
+                        style={{ color: "#0099ff", opacity: 0.8, flexShrink: 0 }}
                         aria-hidden
                       >
                         <BulletIcon size={15} />
@@ -325,7 +296,7 @@ export function EmotionChannels() {
                     transition={{ duration: 0.25 }}
                     className="flex h-full w-full items-center justify-center"
                   >
-                    <AcousticVisual />
+                    <AcousticEqualizer />
                   </motion.div>
                 )}
                 {activeIndex === 1 && (

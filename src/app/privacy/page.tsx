@@ -94,7 +94,7 @@ export default function PrivacyPage() {
                   borderColor: "rgba(45, 156, 219, 0.25)",
                 }}
               >
-                <p className="text-[0.9rem] font-semibold text-[#2D9CDB] mb-1">Important</p>
+                <p className="text-[0.9rem] font-semibold text-[#0099ff] mb-1">Important</p>
                 <p className="text-[0.88rem] text-[var(--text-2)]">
                   Raw biometric data — face images and voice recordings — exists only in memory during processing and is never persisted to disk or used for training. Nearu processes these signals to return emotion labels and immediately discards the source material.
                 </p>

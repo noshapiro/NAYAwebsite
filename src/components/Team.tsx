@@ -10,7 +10,7 @@ const people = [
     initials: "NS",
     name: "Noa Shapiro",
     role: "Founder & CEO",
-    bio: "12+ years in Business Development, Marketing & GTM. Hardware enthusiast passionate about human-centric AI. BA Marketing Management, GMBA candidate at Reichman University.",
+    bio: "12+ years in Business Development, Marketing & GTM. Hardware enthusiast passionate about human-centric AI. BA Marketing Management, GMBA @ Reichman University.",
     bg: "bg-[linear-gradient(135deg,#2a2a3e,#1a1a2a)]",
     linkedinUrl: "https://www.linkedin.com/in/noashapiro/",
   },
@@ -28,7 +28,7 @@ const people = [
     initials: "KV",
     name: "Kye Vatash",
     role: "CBDO",
-    bio: "Business development & strategic partnerships. Drives growth, GTM strategy, and revenue. GMBA candidate at Reichman University.",
+    bio: "Business development & strategic partnerships. Drives growth, GTM strategy, and revenue. GMBA @ Reichman University.",
     bg: "bg-[linear-gradient(135deg,var(--green),var(--accent))]",
     linkedinUrl: "https://www.linkedin.com/in/kye-vatash/",
   },
@@ -199,8 +199,7 @@ export function Team() {
             THE TEAM
           </div>
           <div
-            className="mt-3 h-0.5 w-8 shrink-0 rounded-full"
-            style={{ background: "linear-gradient(90deg, #00d4ff, transparent)" }}
+            className="divider-line"
           />
           <h2 className="mt-6 text-[clamp(2rem,3.5vw,3.2rem)] font-extrabold tracking-[-0.03em] text-white">
             Built by People Who&apos;ve Done This Before

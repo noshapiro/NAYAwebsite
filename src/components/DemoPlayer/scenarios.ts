@@ -19,7 +19,7 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
     name: "onboarding",
     tabLabel: "Employee Onboarding",
     agentName: "Nearu Onboarding Agent",
-    agentColor: "linear-gradient(135deg,#00AEEF,#38bdf8)",
+    agentColor: "linear-gradient(135deg,#0099ff,#0077cc)",
     calloutBadHtml:
       "<strong>Standard agent misses the signal</strong>Hears \"first day\" → dumps a resource list. Employee feels invisible on day one.",
     calloutGoodHtml:

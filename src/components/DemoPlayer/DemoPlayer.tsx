@@ -244,7 +244,7 @@ export function DemoPlayer() {
                       <span className="text-[0.78rem] font-bold text-white">Agent B</span>
                       <span
                         className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[0.68rem] font-medium text-white"
-                        style={{ background: "#38bdf8" }}
+                        style={{ background: "#0099ff" }}
                       >
                         NEARU Soul Engine™
                       </span>
@@ -260,7 +260,7 @@ export function DemoPlayer() {
                         <div>
                           <div className="flex items-center gap-2">
                             <span className="text-[0.8rem] font-bold leading-tight text-white">Standard Agent</span>
-                            <span className="rounded px-1.5 py-0.5 text-[0.6rem] font-semibold text-[#38bdf8]" style={{ background: "rgba(56,189,248,0.15)", border: "1px solid rgba(56,189,248,0.3)" }}>
+                            <span className="rounded px-1.5 py-0.5 text-[0.6rem] font-semibold text-[#0099ff]" style={{ background: "rgba(0,153,255,0.15)", border: "1px solid rgba(0,153,255,0.3)" }}>
                               NEARU
                             </span>
                           </div>
@@ -283,7 +283,7 @@ export function DemoPlayer() {
                             {[0, 1, 2, 3, 4].map((i) => (
                               <motion.span
                                 key={i}
-                                className="inline-block h-4 w-1 rounded-full bg-[#38bdf8]"
+                                className="inline-block h-4 w-1 rounded-full bg-[#0099ff]"
                                 animate={{ height: [8, 16, 8], opacity: [0.5, 1, 0.5] }}
                                 transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.12, ease: "easeInOut" }}
                               />
@@ -309,8 +309,8 @@ export function DemoPlayer() {
                             ))}
                           </div>
                           <motion.div
-                            className="nearu-analysis-box flex items-center justify-between gap-2 border text-[0.68rem] text-[#38bdf8]"
-                            style={{ borderColor: "rgba(56,189,248,0.2)", background: "rgba(56,189,248,0.06)" }}
+                            className="nearu-analysis-box flex items-center justify-between gap-2 border text-[0.68rem] text-[#0099ff]"
+                            style={{ borderColor: "rgba(0,153,255,0.2)", background: "rgba(0,153,255,0.06)" }}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.3 }}
@@ -320,7 +320,7 @@ export function DemoPlayer() {
                               {[0, 1, 2, 3, 4].map((i) => (
                                 <motion.span
                                   key={i}
-                                  className="inline-block h-3 w-0.5 rounded-full bg-[#38bdf8]"
+                                  className="inline-block h-3 w-0.5 rounded-full bg-[#0099ff]"
                                   animate={{ height: [6, 12, 6], opacity: [0.6, 1, 0.6] }}
                                   transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
                                 />
@@ -396,7 +396,7 @@ export function DemoPlayer() {
                     onClick={playFull}
                     disabled={isPlaying || finished}
                     className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-[0.8rem] font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                    style={{ background: "#38bdf8" }}
+                    style={{ background: "#0099ff" }}
                   >
                     <Play className="h-4 w-4 shrink-0" strokeWidth={2} fill="currentColor" />
                     {isPlaying ? "Playing..." : "Play"}

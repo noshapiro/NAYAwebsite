@@ -10,21 +10,28 @@ import {
   Car,
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
 
-const ICON_CLASS = "h-8 w-8 shrink-0 stroke-[var(--accent)]";
-const STROKE = { strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-
 const CARD_WIDTH = 340;
-const CARD_GAP = 20;
-const SET_WIDTH = (CARD_WIDTH + CARD_GAP) * 7; // one full set
-/** Увеличьте на 1 после замены картинок в public/use-cases/, чтобы сбросить кэш */
+const CARD_GAP = 12;
+const SCROLL_STEP = 352; /* one card + gap */
+
+const ICON_MAP = {
+  Building2,
+  BookOpen,
+  Headphones,
+  Activity,
+  TrendingUp,
+  Bot,
+  Car,
+} as const;
+
 const USE_CASES_IMAGES_VERSION = 2;
 
 const cases = [
   {
-    Icon: Building2,
+    Icon: "Building2" as keyof typeof ICON_MAP,
     image: "/use-cases/enterprise.png",
     label: "Enterprise",
     title: "Employee Experience",
@@ -32,7 +39,7 @@ const cases = [
     outcome: "↑ Retention · ↓ Training overhead",
   },
   {
-    Icon: BookOpen,
+    Icon: "BookOpen" as keyof typeof ICON_MAP,
     image: "/use-cases/edtech.png",
     label: "EdTech",
     title: "Learning & Training",
@@ -40,7 +47,7 @@ const cases = [
     outcome: "↑ Retention · Adaptive pacing",
   },
   {
-    Icon: Headphones,
+    Icon: "Headphones" as keyof typeof ICON_MAP,
     image: "/use-cases/cx-support.png",
     label: "CX / Support",
     title: "Customer Experience",
@@ -48,7 +55,7 @@ const cases = [
     outcome: "↑ CSAT · ↓ Escalations",
   },
   {
-    Icon: Activity,
+    Icon: "Activity" as keyof typeof ICON_MAP,
     image: "/use-cases/healthcare.png",
     label: "Healthcare",
     title: "Mental Health & Care",
@@ -56,7 +63,7 @@ const cases = [
     outcome: "Safer remote care · ↑ Patient trust",
   },
   {
-    Icon: TrendingUp,
+    Icon: "TrendingUp" as keyof typeof ICON_MAP,
     image: "/use-cases/sales-marketing.png",
     label: "Sales & Marketing",
     title: "Conversion & GTM",
@@ -64,7 +71,7 @@ const cases = [
     outcome: "↑ Engagement · ↑ Conversion",
   },
   {
-    Icon: Bot,
+    Icon: "Bot" as keyof typeof ICON_MAP,
     image: "/use-cases/robotics.png",
     label: "Robotics",
     title: "Companion Robotics",
@@ -72,7 +79,7 @@ const cases = [
     outcome: "Deeper attachment · ↑ Retention",
   },
   {
-    Icon: Car,
+    Icon: "Car" as keyof typeof ICON_MAP,
     image: "/use-cases/automotive.png",
     label: "Automotive",
     title: "In-Car Voice Assistants",
@@ -81,15 +88,36 @@ const cases = [
   },
 ] as const;
 
-function CarouselCard({
-  Icon,
+function MetricsRow({ outcome }: { outcome: string }) {
+  const parts = outcome.split(" · ");
+  return (
+    <div className="use-case-card__metrics">
+      {parts.map((part, i) => {
+        const trimmed = part.trim();
+        const arrow = trimmed.startsWith("↑") || trimmed.startsWith("↓") ? trimmed.slice(0, 1) : null;
+        const rest = arrow ? trimmed.slice(1).trim() : trimmed;
+        return (
+          <span key={i}>
+            {i > 0 && <span className="dot"> · </span>}
+            {arrow && <span className="arrow">{arrow}</span>}
+            {arrow && rest ? " " : null}
+            {rest}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+function UseCaseCard({
+  IconKey,
   image,
   label,
   title,
   body,
   outcome,
 }: {
-  Icon: typeof Building2;
+  IconKey: keyof typeof ICON_MAP;
   image: string;
   label: string;
   title: string;
@@ -98,48 +126,82 @@ function CarouselCard({
 }) {
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = !imgFailed;
+  const Icon = ICON_MAP[IconKey];
 
   return (
-    <div className="flex h-full w-[340px] shrink-0 flex-col overflow-hidden rounded-[12px] border border-[var(--border)] bg-[var(--surface)] shadow-[0_4px_24px_rgba(0,0,0,0.3)] transition hover:border-[var(--accent-25)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-      {/* Картинка из public/use-cases/ или плейсхолдер с иконкой */}
-      <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-gradient-to-br from-[var(--surface-2)] via-[var(--accent-08)] to-[var(--surface-2)]">
-        {showImage && (
+    <article className="use-case-card">
+      <div className="use-case-card__image-wrap">
+        {showImage ? (
           <Image
             src={`${image}?v=${USE_CASES_IMAGES_VERSION}`}
             alt=""
-            fill
-            className="object-cover"
+            width={340}
+            height={204}
+            className="object-cover object-center block w-full h-full"
             sizes="340px"
             unoptimized
             onError={() => setImgFailed(true)}
           />
-        )}
-        {!showImage && (
-          <div className="flex h-full w-full items-center justify-center">
-            <Icon className={`${ICON_CLASS} opacity-80`} fill="none" {...STROKE} />
+        ) : (
+          <div className="use-case-card__image-placeholder">
+            <Icon size={40} strokeWidth={1.5} />
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-4">
-        <div className="text-[0.72rem] font-extrabold uppercase tracking-[0.12em] text-[var(--accent)]">
-          {label}
-        </div>
-        <h3 className="mt-2 text-[1.1rem] font-semibold tracking-[-0.02em] text-[var(--text)]">
-          {title}
-        </h3>
-        <p className="mt-2.5 text-[0.88rem] leading-[1.65] text-[var(--text-2)]">
-          {body}
-        </p>
-        <div className="mt-4 text-[0.75rem] font-semibold text-[var(--green)]">
-          {outcome}
-        </div>
+      <div className="use-case-card__content">
+        <div className="use-case-card__category">{label}</div>
+        <h3 className="use-case-card__title">{title}</h3>
+        <p className="use-case-card__body">{body}</p>
+        <MetricsRow outcome={outcome} />
       </div>
-    </div>
+    </article>
+  );
+}
+
+function ArrowLeft() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="15 18 9 12 15 6" />
+    </svg>
+  );
+}
+function ArrowRight() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
   );
 }
 
 export function UseCases() {
-  const [carouselPaused, setCarouselPaused] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const left = el.scrollLeft;
+    const maxLeft = el.scrollWidth - el.clientWidth;
+    setAtStart(left <= 0);
+    setAtEnd(maxLeft <= 0 || left >= maxLeft - 1);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScrollState();
+    el.addEventListener("scroll", updateScrollState);
+    window.addEventListener("resize", updateScrollState);
+    return () => {
+      el.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [updateScrollState]);
+
+  const scroll = (delta: number) => {
+    scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
+  };
 
   return (
     <section className="relative overflow-hidden bg-[var(--bg)] py-16 md:py-20" id="use-cases">
@@ -164,31 +226,41 @@ export function UseCases() {
         </Reveal>
       </div>
 
-      {/* Full-bleed carousel to screen edges */}
-      <div
-        className="relative mt-12 w-full overflow-hidden"
-        onMouseEnter={() => setCarouselPaused(true)}
-        onMouseLeave={() => setCarouselPaused(false)}
-      >
-        <div className="overflow-x-hidden pb-4 pt-2">
-          <div
-            className={`use-cases-track flex gap-5 ${carouselPaused ? "is-paused" : ""}`}
-            style={{
-              width: "max-content",
-              ["--use-cases-set-width" as string]: `-${SET_WIDTH}px`,
-            }}
-          >
-            {[...cases, ...cases].map((c, i) => (
-              <div key={`${c.title}-${i}`} className="shrink-0">
-<CarouselCard
-                    Icon={c.Icon}
-                    image={c.image}
-                    label={c.label}
-                    title={c.title}
-                    body={c.body}
-                    outcome={c.outcome}
-                  />
-              </div>
+      {/* Carousel — full viewport width, arrows on sides (LinkedIn-style) */}
+      <div className="relative z-10 mt-12 use-cases-carousel-wrapper">
+        <button
+          type="button"
+          onClick={() => scroll(-SCROLL_STEP)}
+          disabled={atStart}
+          className="use-cases-carousel-arrow use-cases-carousel-arrow--left"
+          aria-label="Previous"
+        >
+          <ArrowLeft />
+        </button>
+        <button
+          type="button"
+          onClick={() => scroll(SCROLL_STEP)}
+          disabled={atEnd}
+          className="use-cases-carousel-arrow use-cases-carousel-arrow--right"
+          aria-label="Next"
+        >
+          <ArrowRight />
+        </button>
+        <div
+          ref={scrollRef}
+          className="use-cases-carousel-track"
+        >
+          <div className="use-cases-track-inner">
+            {cases.map((c, i) => (
+              <UseCaseCard
+                key={`${c.title}-${i}`}
+                IconKey={c.Icon}
+                image={c.image}
+                label={c.label}
+                title={c.title}
+                body={c.body}
+                outcome={c.outcome}
+              />
             ))}
           </div>
         </div>
