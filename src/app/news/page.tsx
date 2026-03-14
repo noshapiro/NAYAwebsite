@@ -42,9 +42,9 @@ export default function NewsPage() {
         </p>
       </header>
 
-      {/* Articles grid */}
+      {/* Articles grid — 3 cards per row on large screens */}
       <div
-        className="mx-auto grid max-w-[1100px] grid-cols-1 gap-4 px-6 sm:grid-cols-2"
+        className="mx-auto grid max-w-[1100px] grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-3"
         style={{ marginTop: 56, padding: "0 24px 96px" }}
       >
         {NEWS_ITEMS.map((item) => (
@@ -56,14 +56,14 @@ export default function NewsPage() {
             className="news-card flex cursor-pointer flex-col overflow-hidden rounded-xl border border-[#1e1e1e] bg-[#111111] transition-[background,border-color] duration-150 hover:border-[#2a2a2a] hover:bg-[#181818]"
           >
             {/* Image area */}
-            <div className="relative h-[220px] w-full shrink-0 overflow-hidden bg-[#181818]">
+            <div className="relative h-[180px] w-full shrink-0 overflow-hidden bg-[#181818]">
               {item.image && !failedImages.has(item.image) ? (
                 <Image
                   src={item.image}
                   alt=""
                   fill
                   className="block object-cover object-center"
-                  sizes="(max-width: 640px) 100vw, 50vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   unoptimized
                   onError={() => setFailedImages((prev) => new Set(prev).add(item.image!))}
                 />
@@ -82,11 +82,11 @@ export default function NewsPage() {
             {/* Content area */}
             <div
               className="flex flex-1 flex-col"
-              style={{ padding: "20px 22px 22px" }}
+              style={{ padding: "16px 18px 18px" }}
             >
               <div
-                className="mb-2.5 flex items-center gap-2 text-[12px]"
-                style={{ color: "#555555", marginBottom: 10 }}
+                className="mb-1.5 flex items-center gap-2 text-[11px]"
+                style={{ color: "#555555", marginBottom: 8 }}
               >
                 <span>{item.date}</span>
                 {item.readTime && (
@@ -101,13 +101,13 @@ export default function NewsPage() {
               </div>
               <h2
                 className="font-bold text-white"
-                style={{ fontSize: 17, lineHeight: 1.35, marginBottom: 10 }}
+                style={{ fontSize: 15, lineHeight: 1.35, marginBottom: 8 }}
               >
                 {item.title}
               </h2>
               <p
-                className="line-clamp-3 mb-4 flex-1 text-[14px] text-[#a0a0a0]"
-                style={{ lineHeight: 1.65 }}
+                className="line-clamp-3 mb-3 flex-1 text-[13px] text-[#a0a0a0]"
+                style={{ lineHeight: 1.6 }}
               >
                 {item.description}
               </p>

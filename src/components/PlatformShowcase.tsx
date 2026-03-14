@@ -7,7 +7,6 @@ const LIVE_BULLETS = [
   "Emotion detected in ~1.6s — before the LLM responds",
   "Tone, Words, and Face shown independently in real time",
   "Conversation history and emotional context persist across sessions",
-  "Push Space to speak — no buttons, no friction",
 ];
 
 const VIDEO_BULLETS = [
