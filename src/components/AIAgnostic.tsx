@@ -68,7 +68,7 @@ function ModelLogo({ m }: { m: (typeof MODELS)[number] }) {
 export function AIAgnostic() {
   return (
     <section
-      className="py-16 md:py-20"
+      className="py-12 md:py-20"
       id="models"
       style={{ background: "linear-gradient(to bottom, #0e0e0e 0%, #111111 100%)" }}
     >

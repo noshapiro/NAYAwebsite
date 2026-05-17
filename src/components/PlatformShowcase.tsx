@@ -72,9 +72,8 @@ export function PlatformShowcase() {
 
   return (
     <section
-      className="overflow-hidden py-24"
+      className="overflow-hidden py-12 md:py-24"
       style={{
-        padding: "96px 0",
         background:
           "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(0,60,140,0.07), transparent 70%)",
       }}

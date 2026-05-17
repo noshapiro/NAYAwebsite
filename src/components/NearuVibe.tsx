@@ -106,7 +106,7 @@ export function NearuVibe() {
 
   return (
     <section
-      className="relative overflow-hidden py-16 md:py-20"
+      className="relative overflow-hidden py-12 md:py-20"
       id="nearuvibe"
       style={{ background: "linear-gradient(to bottom, #111111 0%, #0e0e0e 100%)" }}
     >

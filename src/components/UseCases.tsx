@@ -204,7 +204,7 @@ export function UseCases() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[var(--bg)] py-16 md:py-20" id="use-cases">
+    <section className="relative overflow-hidden bg-[var(--bg)] py-12 md:py-20" id="use-cases">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

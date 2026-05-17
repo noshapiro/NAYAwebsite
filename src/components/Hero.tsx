@@ -123,16 +123,16 @@ export function Hero() {
   );
 
   return (
-    <section className="relative pb-28 pt-[100px] md:pb-32" style={{ overflow: "visible", background: "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0, 102, 204, 0.08) 0%, transparent 70%), #0e0e0e" }}>
+    <section className="relative pb-20 pt-[100px] md:pb-32" style={{ overflow: "visible", background: "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0, 102, 204, 0.08) 0%, transparent 70%), #0e0e0e" }}>
       <div className="container relative z-10" style={{ overflow: "visible" }}>
         <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-[1.12fr_0.88fr] md:gap-[50px]" style={{ overflow: "visible" }}>
           <Reveal className="overflow-visible">
             <p className="text-[0.75rem] font-normal uppercase tracking-[0.06em] text-[var(--text-2)]">
-              Emotional Intelligence Infrastructure for Embodied AI
+              Emotional Intelligence & Behavioral Infrastructure for Embedded AI & Robotics
             </p>
 
             <h1 className="mt-6 bg-[linear-gradient(135deg,#fff_40%,rgba(255,255,255,0.6))] bg-clip-text text-[clamp(2.2rem,3.8vw,4rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-transparent">
-              The{" "}
+              We Make AI Behave{" "}
               <em
                 className="not-italic"
                 style={{
@@ -143,14 +143,12 @@ export function Hero() {
                   backgroundClip: "unset",
                 }}
               >
-                Emotional Layer
+                Like Humans
               </em>
-              <br />
-              AI Has Been Missing
             </h1>
 
-            <p className="mt-5 max-w-[480px] text-[1.1rem] leading-[1.7] text-[var(--text-2)]">
-              AI models provide intelligence. Nearu provides presence, empathy, and trust — the layer that turns AI agents into entities people actually bond with.
+            <p className="mt-5 max-w-[520px] text-[0.77rem] leading-[1.55] text-[var(--text-2)]">
+              We turn AI agents and robots into companions people actually trust — emotionally aware, with memory that carries and a personality that deepens over time. Built for the high-stakes environments where empathy moves the metrics.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
@@ -230,23 +228,6 @@ export function Hero() {
                 className="pointer-events-none absolute bottom-0 left-0 right-0 h-[55%] bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/80 to-transparent"
                 aria-hidden
               />
-                </div>
-
-                {/* Emotion chip — top-right of avatar */}
-                <div
-                  className="absolute top-[14px] right-[14px] z-10 flex items-center gap-1.5 rounded-[20px] px-2.5 py-1.5 text-[10px] font-semibold text-[#0099ff]"
-                  style={{
-                    background: "rgba(0,8,18,0.75)",
-                    backdropFilter: "blur(8px)",
-                    border: "1px solid rgba(0,153,255,0.2)",
-                  }}
-                >
-                  <span
-                    className="hero-emotion-dot h-[5px] w-[5px] shrink-0 rounded-full bg-[#22c55e]"
-                    style={{ boxShadow: "0 0 6px rgba(34,197,94,0.6)" }}
-                    aria-hidden
-                  />
-                  Happy · 0.85
                 </div>
 
                 {/* Player bottom panel */}

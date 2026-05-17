@@ -226,7 +226,7 @@ export function EmotionChannels() {
 
   return (
     <section
-      className="relative overflow-hidden py-16 md:py-20"
+      className="relative overflow-hidden py-12 md:py-20"
       id="emotion-channels"
       style={{ background: "radial-gradient(ellipse 50% 60% at 50% 40%, rgba(0, 102, 204, 0.07) 0%, transparent 60%), #0e0e0e" }}
     >

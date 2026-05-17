@@ -485,15 +485,6 @@ section {
   100% { transform: translate(-50%, -50%) scale(1.7); opacity: 0; }
 }
 
-/* Hero emotion chip — green dot pulse */
-@keyframes hero-chip-pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(34,197,94,0.6); }
-  50%      { opacity: 0.85; box-shadow: 0 0 10px rgba(34,197,94,0.8); }
-}
-.hero-emotion-dot {
-  animation: hero-chip-pulse 2s ease-in-out infinite;
-}
-
 /* Use Cases — full viewport carousel breakout */
 .use-cases-carousel-wrapper {
   width: 100vw;
@@ -651,8 +642,9 @@ section {
   transition: gap 0.2s ease;
 }
 
+/* Mobile: reduce section spacing for tighter layout */
 @media (max-width: 768px) {
   section {
-    padding: 84px 0;
+    padding: 48px 0;
   }
 }

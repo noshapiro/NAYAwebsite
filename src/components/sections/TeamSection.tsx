@@ -244,7 +244,7 @@ function TeamCard({
 export function TeamSection() {
   return (
     <section
-      className="relative bg-[var(--bg)] py-16 md:py-20"
+      className="relative bg-[var(--bg)] py-12 md:py-20"
       id="team"
     >
       <div className="container relative z-10">
