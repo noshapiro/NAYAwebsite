@@ -1,6 +1,7 @@
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { WhatWeBuild } from "@/components/WhatWeBuild";
 import { Problem } from "@/components/Problem";
 import { SoulEngine } from "@/components/SoulEngine";
 import { NearuVibe } from "@/components/NearuVibe";
@@ -22,6 +23,7 @@ export default function Home() {
       <AnnouncementBar />
       <Navbar />
       <Hero />
+      <WhatWeBuild />
       <Problem />
       <SoulEngine />
       <NearuVibe />
