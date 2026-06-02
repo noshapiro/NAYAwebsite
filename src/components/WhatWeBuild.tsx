@@ -137,7 +137,7 @@ function ExpandToggle({
       type="button"
       onClick={onClick}
       aria-expanded={expanded}
-      className="mt-auto inline-flex items-center gap-1.5 text-left text-[0.9rem] font-medium text-[var(--accent)] transition-opacity hover:opacity-80"
+      className="mt-6 inline-flex items-center gap-1.5 text-left text-[0.9rem] font-medium text-[var(--accent)] transition-opacity hover:opacity-80"
     >
       {expanded ? "Show less" : label}
       <ArrowRight
@@ -165,14 +165,14 @@ function ProductCard({
 
   return (
     <motion.article
-      className="flex min-w-0 flex-1 flex-col rounded-[var(--radius-lg)] border border-[var(--border)] bg-[#13131a] p-6 transition-colors duration-200 hover:border-[rgba(0,153,255,0.2)] md:p-8"
+      className="flex min-w-0 flex-1 flex-col self-start rounded-[var(--radius-lg)] border border-[var(--border)] bg-[#13131a] p-6 transition-colors duration-200 hover:border-[rgba(0,153,255,0.2)] md:p-8"
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }}
       viewport={{ once: true, amount: 0.2 }}
     >
         <span className="text-[0.72rem] font-medium tracking-[0.08em] text-[rgba(245,245,245,0.3)]">{index}</span>
-        <div className="flex flex-1 flex-col">{intro}</div>
+        <div>{intro}</div>
         <ExpandToggle
           expanded={expanded}
           label={toggleLabel}
@@ -187,7 +187,7 @@ function SectionLink({ href, children }: { href: string; children: ReactNode }) 
   return (
     <a
       href={href}
-      className="mt-auto inline-flex items-center gap-1.5 pt-6 text-[0.9rem] font-medium text-[var(--accent)] transition-opacity hover:opacity-80"
+      className="mt-6 inline-flex items-center gap-1.5 text-left text-[0.9rem] font-medium text-[var(--accent)] transition-opacity hover:opacity-80"
     >
       {children}
       <ArrowRight className="h-4 w-4 shrink-0" {...STROKE} />
@@ -212,7 +212,7 @@ export function WhatWeBuild() {
           </p>
         </Reveal>
 
-        <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-stretch sm:gap-6">
+        <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
           <ProductCard
             index="01"
             toggleLabel="Read more"
