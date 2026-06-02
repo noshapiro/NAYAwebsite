@@ -96,7 +96,7 @@ body::before {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -483,6 +483,30 @@ section {
 @keyframes hero-ring-out {
   0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.5; }
   100% { transform: translate(-50%, -50%) scale(1.7); opacity: 0; }
+}
+
+/* Partner logo marquee */
+@keyframes partner-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.partner-marquee-track {
+  animation: partner-marquee 36s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .partner-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    gap: 12px;
+  }
+  .partner-marquee {
+    overflow: visible;
+  }
 }
 
 /* Use Cases — full viewport carousel breakout */

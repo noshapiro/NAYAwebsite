@@ -35,29 +35,9 @@ const TEAM = [
     isNearu: false,
   },
   {
-    name: "Kye Vatash",
-    role: "VP Operations & Business Development",
-    bio: "Business development and strategic partnerships specialist. Operations expert with a focus on growth and scaling. GMBA @ Reichman University.",
-    image: "/team/kye.png",
-    objectPosition: "center 15%",
-    linkedin: "https://www.linkedin.com/in/kye-vatash/",
-    twitter: null,
-    isNearu: false,
-  },
-  {
-    name: "Valeriia Shcherbina",
-    role: "Marketing Lead",
-    bio: "10+ years in international marketing and brand management across tech and fashion. Former Leading Brand Activations Specialist @ Reebok. Now building Nearu's market presence from the ground up.",
-    image: "/team/valeriia.jpg",
-    objectPosition: "center 10%",
-    linkedin: "https://www.linkedin.com/in/valeriia-shcherbina/",
-    twitter: null,
-    isNearu: false,
-  },
-  {
-    name: "Nearu",
+    name: "Michelle (Nearu)",
     role: "Avatar",
-    bio: "The heart of the company. A persistent, emotionally intelligent AI avatar designed to bridge the gap between human intent and machine execution. She's always listening.",
+    bio: "The heart of the company and our living proof of concept. The first empathetic AI companion, showcasing our infrastructure.",
     image: "/team/nearu.png",
     objectPosition: "center 20%",
     linkedin: "https://www.linkedin.com/in/michelle-ai-companion/",
@@ -136,57 +116,51 @@ function TeamCard({
       tabIndex={0}
       onClick={() => setExpanded(!expanded)}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setExpanded((x) => !x)}
-      className="group flex min-h-[200px] w-full cursor-pointer flex-row items-stretch overflow-hidden rounded-xl border border-[#1e1e1e] bg-[#111111] transition-[border-color] duration-150 hover:border-[rgba(0,153,255,0.3)]"
+      className={`group flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-xl border bg-[#111111] transition-[border-color,box-shadow] duration-150 hover:border-[rgba(0,153,255,0.35)] ${
+        isNearu
+          ? "border-[rgba(0,153,255,0.25)] shadow-[0_0_32px_rgba(0,153,255,0.08)]"
+          : "border-[#1e1e1e]"
+      }`}
     >
-      {/* Photo area (left) — fixed 160px */}
-      <div
-        className="relative w-[160px] shrink-0 overflow-hidden"
-      >
+      <div className="relative aspect-[4/5] w-full shrink-0 overflow-hidden bg-[#181818]">
         {!imgError ? (
           <Image
             src={image}
             alt={name}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
             style={{ objectPosition }}
-            sizes="160px"
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
             onError={() => setImgError(true)}
           />
         ) : (
           <div className="h-full w-full bg-[#181818]" />
         )}
-        {isNearu && (
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 80% 80% at 50% 30%, rgba(0,153,255,0.12), transparent 65%)",
-            }}
-            aria-hidden
-          />
-        )}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-16"
+          style={{
+            background: "linear-gradient(to top, rgba(17,17,17,0.85), transparent)",
+          }}
+          aria-hidden
+        />
       </div>
 
-      {/* Info area (right) — flex: 1, wide text area */}
-      <div
-        className="flex flex-1 flex-col justify-start overflow-hidden"
-        style={{ padding: "16px 18px 16px" }}
-      >
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-3">
         <h3 className="font-bold text-white" style={{ fontSize: 15, marginBottom: 3 }}>
           {name}
         </h3>
         <p
           className="text-white/50"
-          style={{ fontSize: 11, lineHeight: 1.3, marginBottom: 10 }}
+          style={{ fontSize: 11, lineHeight: 1.35, marginBottom: 10 }}
         >
           {role}
         </p>
         <p
           ref={bioRef}
-          className={expanded ? "block text-white/65" : "bio-clamp text-white/65"}
+          className={expanded ? "block text-white/65" : "bio-clamp-4 text-white/65"}
           style={{
             fontSize: 12,
-            lineHeight: 1.6,
+            lineHeight: 1.55,
             marginBottom: 8,
             ...(expanded && { display: "block", overflow: "visible" }),
           }}
@@ -199,7 +173,7 @@ function TeamCard({
               fontSize: "11px",
               color: "#0099ff",
               cursor: "pointer",
-              marginTop: "4px",
+              marginTop: "2px",
               display: "block",
               marginBottom: 8,
             }}
@@ -207,10 +181,7 @@ function TeamCard({
             {expanded ? "↑ less" : "↓ more"}
           </span>
         )}
-        <div
-          className="mt-auto flex items-center"
-          style={{ gap: 6, paddingTop: 8 }}
-        >
+        <div className="mt-auto flex items-center pt-2" style={{ gap: 6 }}>
           <a
             href={linkedin}
             onClick={(e) => e.stopPropagation()}
@@ -265,11 +236,7 @@ export function TeamSection() {
           </h2>
         </header>
 
-        {/* Grid — 6 equal cards, 3 per row; stretch so row height matches */}
-        <div
-          className="mx-auto mt-12 grid items-stretch gap-3"
-          style={{ maxWidth: 1100, gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}
-        >
+        <div className="mx-auto mt-12 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
           {TEAM.map((member) => (
             <TeamCard
               key={member.name}

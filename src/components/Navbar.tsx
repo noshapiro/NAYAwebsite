@@ -43,9 +43,9 @@ export function Navbar() {
                 <Image
                   src={LOGO_PATH}
                   alt="Nearu"
-                  width={60}
-                  height={16}
-                  className="h-4 w-auto object-contain object-left"
+                  width={66}
+                  height={18}
+                  className="h-[18px] w-auto object-contain object-left"
                   priority
                   unoptimized
                   onError={() => setLogoError(true)}
@@ -62,7 +62,7 @@ export function Navbar() {
               {links.map((item) => (
                 <li key={item.href}>
                   <a
-                    className="inline-flex items-center gap-1 text-[0.875rem] font-medium text-[var(--text-2)] transition-colors hover:text-[var(--text)]"
+                    className="inline-flex items-center gap-1 text-[0.96rem] font-medium text-[var(--text-2)] transition-colors hover:text-[var(--text)]"
                     href={item.href}
                   >
                     {item.label}
@@ -77,13 +77,13 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <a
               href="/contact"
-              className="hidden items-center gap-2 rounded-md border border-[var(--border-bright)] bg-transparent px-4 py-2 text-[0.875rem] font-medium text-[var(--text)] transition hover:border-white/20 hover:bg-white/5 sm:inline-flex"
+              className="hidden items-center gap-2 rounded-md border border-[var(--border-bright)] bg-transparent px-[18px] py-[9px] text-[0.96rem] font-medium text-[var(--text)] transition hover:border-white/20 hover:bg-white/5 sm:inline-flex"
             >
               Request Demo
             </a>
             <a
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2 text-[0.875rem] font-semibold text-white shadow-[0_0_20px_var(--accent-glow)] transition hover:opacity-90 hover:shadow-[0_0_24px_var(--accent-glow)]"
+              className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-[22px] py-[9px] text-[0.96rem] font-semibold text-white shadow-[0_0_20px_var(--accent-glow)] transition hover:opacity-90 hover:shadow-[0_0_24px_var(--accent-glow)]"
             >
               Start Building
             </a>

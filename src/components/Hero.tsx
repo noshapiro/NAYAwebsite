@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Pause, Play } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
@@ -125,13 +125,13 @@ export function Hero() {
   return (
     <section className="relative pb-20 pt-[100px] md:pb-32" style={{ overflow: "visible", background: "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0, 102, 204, 0.08) 0%, transparent 70%), #0e0e0e" }}>
       <div className="container relative z-10" style={{ overflow: "visible" }}>
-        <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-[1.12fr_0.88fr] md:gap-[50px]" style={{ overflow: "visible" }}>
+        <div className="grid grid-cols-1 items-start gap-14 md:grid-cols-[1.12fr_0.88fr] md:items-center md:gap-[55px]" style={{ overflow: "visible" }}>
           <Reveal className="overflow-visible">
-            <p className="text-[0.75rem] font-normal uppercase tracking-[0.06em] text-[var(--text-2)]">
+            <p className="text-[0.83rem] font-normal uppercase tracking-[0.06em] text-[var(--text-2)]">
               Emotional Intelligence & Behavioral Infrastructure for Embedded AI & Robotics
             </p>
 
-            <h1 className="mt-6 bg-[linear-gradient(135deg,#fff_40%,rgba(255,255,255,0.6))] bg-clip-text text-[clamp(2.2rem,3.8vw,4rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-transparent">
+            <h1 className="mt-6 bg-[linear-gradient(135deg,#fff_40%,rgba(255,255,255,0.6))] bg-clip-text text-[clamp(2.42rem,4.2vw,4.4rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-transparent">
               We Make AI Behave{" "}
               <em
                 className="not-italic"
@@ -147,38 +147,29 @@ export function Hero() {
               </em>
             </h1>
 
-            <p className="mt-5 max-w-[520px] text-[0.77rem] leading-[1.55] text-[var(--text-2)]">
+            <p className="mt-5 max-w-[572px] text-[0.94rem] leading-[1.6] text-[var(--text-2)]">
               We turn AI agents and robots into companions people actually trust — emotionally aware, with memory that carries and a personality that deepens over time. Built for the high-stakes environments where empathy moves the metrics.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-[0_0_20px_var(--accent-40)] transition hover:translate-y-[-1px] hover:opacity-90 hover:shadow-[0_0_30px_var(--accent-glow)]"
+                className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-8 py-4 text-[1.05rem] font-semibold text-white shadow-[0_0_20px_var(--accent-40)] transition hover:translate-y-[-1px] hover:opacity-90 hover:shadow-[0_0_30px_var(--accent-glow)]"
               >
                 Request Demo
               </a>
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-transparent px-7 py-3.5 text-[0.95rem] font-semibold text-[var(--text-2)] transition hover:border-white/25 hover:bg-white/5 hover:text-[var(--text)]"
+                className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-transparent px-8 py-4 text-[1.05rem] font-semibold text-[var(--text-2)] transition hover:border-white/25 hover:bg-white/5 hover:text-[var(--text)]"
               >
                 Explore the API
               </a>
-            </div>
-
-            <div className="mt-10 flex flex-wrap items-center gap-6">
-              {["AI-agnostic", "REST API + WebSocket"].map((t) => (
-                <div key={t} className="flex items-center gap-1.5 text-[0.78rem] text-[var(--text-3)]">
-                  <Check className="h-3.5 w-3.5 shrink-0 text-[var(--green)]" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                  {t}
-                </div>
-              ))}
             </div>
           </Reveal>
 
           <Reveal className="flex flex-col items-center overflow-visible">
             {/* Parent wrapper — no border/background, overflow visible */}
-            <div className="relative w-[420px] shrink-0" style={{ overflow: "visible" }}>
+            <div className="relative w-[462px] shrink-0" style={{ overflow: "visible" }}>
               {/* Video/avatar container — thin blue outline; overflow hidden to avoid bottom line artifact */}
               <div
                 className="relative w-full overflow-hidden rounded-[24px]"
@@ -237,7 +228,7 @@ export function Hero() {
                 >
                   {/* Left — play button (72×74px), clip children, content centered */}
                   <div
-                    className="group flex h-[74px] w-[72px] shrink-0 cursor-pointer items-center justify-center overflow-hidden border-r border-[#1a1a1a] transition-[background] duration-150 hover:bg-[rgba(0,153,255,0.05)]"
+                    className="group flex h-[81px] w-[79px] shrink-0 cursor-pointer items-center justify-center overflow-hidden border-r border-[#1a1a1a] transition-[background] duration-150 hover:bg-[rgba(0,153,255,0.05)]"
                     onClick={avatarMode === "video" ? (videoPlaying ? handleHeroPauseClick : handleHeroPlayClick) : undefined}
                     onKeyDown={(e) => {
                       if (e.key !== "Enter" && e.key !== " ") return;
@@ -253,8 +244,8 @@ export function Hero() {
                     <span
                       className="pointer-events-none absolute left-1/2 top-1/2 rounded-full border border-[rgba(0,153,255,0.25)]"
                       style={{
-                        width: 44,
-                        height: 44,
+                        width: 48,
+                        height: 48,
                         transform: "translate(-50%, -50%)",
                         animation: "hero-ring-out 2s ease-out infinite",
                       }}
@@ -264,18 +255,18 @@ export function Hero() {
                     <span
                       className="relative z-[1] flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-150 group-hover:bg-[rgba(0,153,255,0.2)] group-hover:border-[rgba(0,153,255,0.65)]"
                       style={{
-                        width: 40,
-                        height: 40,
+                        width: 44,
+                        height: 44,
                         background: "rgba(0,153,255,0.1)",
                         borderWidth: "1.5px",
                         borderColor: "rgba(0,153,255,0.35)",
                       }}
                     >
                       {avatarMode === "video" && videoPlaying ? (
-                        <Pause className="h-[15px] w-[15px] shrink-0 text-[#0099ff]" strokeWidth={2} fill="currentColor" />
+                        <Pause className="h-[17px] w-[17px] shrink-0 text-[#0099ff]" strokeWidth={2} fill="currentColor" />
                       ) : (
                         <Play
-                          className="h-[15px] w-[15px] shrink-0 text-[#0099ff]"
+                          className="h-[17px] w-[17px] shrink-0 text-[#0099ff]"
                           strokeWidth={2}
                           fill="currentColor"
                           style={{ marginLeft: 2 }}
@@ -286,12 +277,12 @@ export function Hero() {
 
                   {/* Right — info + timeline, locked height 74px */}
                   <div
-                    className="flex min-h-[74px] max-h-[74px] min-w-0 flex-1 flex-col justify-center gap-2 px-4 py-[13px]"
-                    style={{ paddingLeft: 16, paddingRight: 16 }}
+                    className="flex min-h-[81px] max-h-[81px] min-w-0 flex-1 flex-col justify-center gap-2 px-4 py-[14px]"
+                    style={{ paddingLeft: 18, paddingRight: 18 }}
                   >
                     <div className="flex flex-col gap-[2px]">
-                      <div className="text-[13px] font-semibold leading-[1.2] text-[#ffffff]">Meet Nearu</div>
-                      <div className="m-0 text-[11px] leading-[1.2] text-[#555555]">2:14 · Nearu introduces herself</div>
+                      <div className="text-[14px] font-semibold leading-[1.2] text-[#ffffff]">Meet Nearu</div>
+                      <div className="m-0 text-[12px] leading-[1.2] text-[#555555]">2:14 · Nearu introduces herself</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <div
@@ -309,7 +300,7 @@ export function Hero() {
                         />
                       </div>
                       <span
-                        className="shrink-0 whitespace-nowrap text-[10px] text-[#555555]"
+                        className="shrink-0 whitespace-nowrap text-[11px] text-[#555555]"
                         style={{ fontVariantNumeric: "tabular-nums" }}
                       >
                         {formatTime(Math.round((progress / 100) * HERO_TOTAL_SECONDS))}
@@ -320,7 +311,7 @@ export function Hero() {
             </div>
             {/* Caption below container */}
             <p
-              className="mt-3.5 text-center text-[0.62rem] font-[var(--font-body)]"
+              className="mt-3.5 text-center text-[0.68rem] font-[var(--font-body)]"
               style={{ color: "rgba(245,245,245,0.22)" }}
             >
               Click play to hear Nearu speak
