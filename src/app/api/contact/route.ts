@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+
+const CONTACT_EMAIL = process.env.CONTACT_TO_EMAIL ?? "noa@nnearu.com";
 
 type ContactPayload = {
   name?: string;
@@ -9,15 +10,6 @@ type ContactPayload = {
   reason?: string;
   message?: string;
 };
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -33,7 +25,7 @@ export async function POST(request: Request) {
     const reason = body.reason?.trim() || "General inquiry";
     const message = body.message?.trim();
 
-    if (!name || !email || !message || message === "—") {
+    if (!name || !email || !message) {
       return NextResponse.json(
         { success: false, message: "Name, email, and message are required." },
         { status: 400 }
@@ -47,46 +39,45 @@ export async function POST(request: Request) {
       );
     }
 
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      console.error("RESEND_API_KEY is not set");
-      return NextResponse.json(
-        { success: false, message: "Email service is not configured." },
-        { status: 500 }
-      );
-    }
-
-    const resend = new Resend(apiKey);
-    const to = process.env.CONTACT_TO_EMAIL ?? "noa@nnearu.com";
-    const from =
-      process.env.RESEND_FROM_EMAIL ?? "Nearu Website <onboarding@resend.dev>";
     const subject = `Contact: ${reason} — ${organization !== "—" ? organization : name}`;
 
-    const html = `
-      <h2>Nearu website contact</h2>
-      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-      <p><strong>Company:</strong> ${escapeHtml(organization)}</p>
-      <p><strong>Role:</strong> ${escapeHtml(role)}</p>
-      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-      <p><strong>Inquiry type:</strong> ${escapeHtml(reason)}</p>
-      <p><strong>Message:</strong><br/>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
-      <hr/>
-      <p><em>Sent from nnearu.com contact form</em></p>
-    `;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nnearu.com";
 
-    const { error } = await resend.emails.send({
-      from,
-      to: [to],
-      replyTo: email,
-      subject,
-      html,
+    const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(CONTACT_EMAIL)}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Referer: `${siteUrl}/contact`,
+        Origin: siteUrl,
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        company: organization,
+        role,
+        inquiry_type: reason,
+        message,
+        _subject: subject,
+        _replyto: email,
+        _template: "table",
+        _captcha: "false",
+      }),
     });
 
-    if (error) {
-      console.error("Resend error:", error);
+    const data = (await response.json()) as { success?: string | boolean; message?: string };
+
+    if (!response.ok || data.success === false || data.success === "false") {
+      console.error("FormSubmit error:", data);
+      const needsActivation = data.message?.includes("Activation");
       return NextResponse.json(
-        { success: false, message: error.message || "Failed to send message." },
-        { status: 500 }
+        {
+          success: false,
+          message: needsActivation
+            ? "Form is being activated — check noa@nnearu.com for the activation link, then try again."
+            : data.message || "Failed to send message. Please try again.",
+        },
+        { status: needsActivation ? 503 : 500 }
       );
     }
 
