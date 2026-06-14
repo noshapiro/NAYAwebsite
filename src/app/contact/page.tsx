@@ -19,6 +19,8 @@ const inputBase =
 const labelBase =
   "mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#555555]";
 
+type FormStatus = "idle" | "sending" | "success" | "error";
+
 export default function ContactPage() {
   const [fullName, setFullName] = useState("");
   const [company, setCompany] = useState("");
@@ -26,14 +28,48 @@ export default function ContactPage() {
   const [role, setRole] = useState("");
   const [inquiryType, setInquiryType] = useState("");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [statusMessage, setStatusMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Contact: ${inquiryType || "General"} — ${company || "No company"}`);
-    const body = encodeURIComponent(
-      `Name: ${fullName}\nCompany: ${company}\nEmail: ${email}\nRole: ${role}\nInquiry: ${inquiryType}\n\nMessage:\n${message}`
-    );
-    window.location.href = `mailto:noa@nnearu.com?subject=${subject}&body=${body}`;
+    setStatus("sending");
+    setStatusMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: fullName,
+          organization: company,
+          email,
+          role,
+          reason: inquiryType || "General inquiry",
+          message,
+        }),
+      });
+
+      const data = (await res.json()) as { success?: boolean; message?: string };
+
+      if (!res.ok || !data.success) {
+        setStatus("error");
+        setStatusMessage(data.message || "Failed to send message. Please try again.");
+        return;
+      }
+
+      setStatus("success");
+      setStatusMessage(data.message || "Message sent. We'll be in touch soon.");
+      setFullName("");
+      setCompany("");
+      setEmail("");
+      setRole("");
+      setInquiryType("");
+      setMessage("");
+    } catch {
+      setStatus("error");
+      setStatusMessage("Network error. Please check your connection and try again.");
+    }
   };
 
   return (
@@ -129,6 +165,7 @@ export default function ContactPage() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     className={inputBase}
+                    required
                   />
                 </div>
                 <div>
@@ -220,11 +257,23 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="mt-2 w-full rounded-lg border-0 bg-[#0099ff] py-3 px-6 text-[14px] font-medium text-white transition-colors duration-150 hover:bg-[#0077cc]"
+                disabled={status === "sending"}
+                className="mt-2 w-full rounded-lg border-0 bg-[#0099ff] py-3 px-6 text-[14px] font-medium text-white transition-colors duration-150 hover:bg-[#0077cc] disabled:cursor-not-allowed disabled:opacity-60"
                 style={{ marginTop: 8 }}
               >
-                Send Message →
+                {status === "sending" ? "Sending…" : "Send Message →"}
               </button>
+
+              {statusMessage ? (
+                <p
+                  className={`mt-4 text-[13px] leading-[1.5] ${
+                    status === "success" ? "text-[#22D3A5]" : "text-[#F87171]"
+                  }`}
+                  role="status"
+                >
+                  {statusMessage}
+                </p>
+              ) : null}
             </form>
           </div>
         </div>
