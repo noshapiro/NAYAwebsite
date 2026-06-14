@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 
+const CONTACT_EMAIL = "noa@nnearu.com";
+
 const INQUIRY_OPTIONS = [
   "Select an inquiry type",
   "Technology Partnership",
@@ -36,50 +38,58 @@ export default function ContactPage() {
     setStatus("sending");
     setStatusMessage("");
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    const name = fullName.trim();
+    const emailValue = email.trim();
+    const organization = company.trim() || "—";
+    const reason = inquiryType || "General inquiry";
+    const messageText = message.trim();
+    const subject = `Contact: ${reason} — ${organization !== "—" ? organization : name}`;
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(CONTACT_EMAIL)}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
-          name: fullName,
-          organization: company,
-          email,
-          role,
-          reason: inquiryType || "General inquiry",
-          message,
+          name,
+          email: emailValue,
+          company: organization,
+          role: role.trim() || "—",
+          inquiry_type: reason,
+          message: messageText,
+          _subject: subject,
+          _replyto: emailValue,
+          _template: "table",
+          _captcha: "false",
         }),
-        signal: controller.signal,
       });
 
-      clearTimeout(timeout);
+      const data = (await res.json()) as { success?: string | boolean; message?: string };
+      const ok = data.success === true || data.success === "true";
 
-      const data = (await res.json()) as { success?: boolean; message?: string };
-
-      if (!res.ok || !data.success) {
+      if (!ok) {
         setStatus("error");
-        setStatusMessage(data.message || "Failed to send message. Please try again.");
+        setStatusMessage(
+          data.message?.includes("Activation")
+            ? "Form activation required — check noa@nnearu.com for the activation link."
+            : data.message || "Failed to send message. Please try again."
+        );
         return;
       }
 
       setStatus("success");
-      setStatusMessage(data.message || "Message sent. We'll be in touch soon.");
+      setStatusMessage("Message sent. We'll be in touch soon.");
       setFullName("");
       setCompany("");
       setEmail("");
       setRole("");
       setInquiryType("");
       setMessage("");
-    } catch (err) {
-      clearTimeout(timeout);
+    } catch {
       setStatus("error");
-      if (err instanceof Error && err.name === "AbortError") {
-        setStatusMessage("Request timed out. Please try again or email noa@nnearu.com.");
-      } else {
-        setStatusMessage("Network error. Please check your connection and try again.");
-      }
+      setStatusMessage("Network error. Please try again or email noa@nnearu.com directly.");
     }
   };
 
