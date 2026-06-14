@@ -36,6 +36,9 @@ export default function ContactPage() {
     setStatus("sending");
     setStatusMessage("");
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -48,7 +51,10 @@ export default function ContactPage() {
           reason: inquiryType || "General inquiry",
           message,
         }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeout);
 
       const data = (await res.json()) as { success?: boolean; message?: string };
 
@@ -66,9 +72,14 @@ export default function ContactPage() {
       setRole("");
       setInquiryType("");
       setMessage("");
-    } catch {
+    } catch (err) {
+      clearTimeout(timeout);
       setStatus("error");
-      setStatusMessage("Network error. Please check your connection and try again.");
+      if (err instanceof Error && err.name === "AbortError") {
+        setStatusMessage("Request timed out. Please try again or email noa@nnearu.com.");
+      } else {
+        setStatusMessage("Network error. Please check your connection and try again.");
+      }
     }
   };
 
@@ -252,6 +263,7 @@ export default function ContactPage() {
                     lineHeight: 1.6,
                     minHeight: 120,
                   }}
+                  required
                 />
               </div>
 
@@ -272,6 +284,14 @@ export default function ContactPage() {
                   role="status"
                 >
                   {statusMessage}
+                  {status === "error" ? (
+                    <>
+                      {" "}
+                      <Link href="mailto:noa@nnearu.com" className="underline hover:text-white">
+                        Email us directly
+                      </Link>
+                    </>
+                  ) : null}
                 </p>
               ) : null}
             </form>

@@ -31,11 +31,11 @@ export async function POST(request: Request) {
     const organization = body.organization?.trim() || "—";
     const role = body.role?.trim() || "—";
     const reason = body.reason?.trim() || "General inquiry";
-    const message = body.message?.trim() || "—";
+    const message = body.message?.trim();
 
-    if (!name || !email) {
+    if (!name || !email || !message || message === "—") {
       return NextResponse.json(
-        { success: false, message: "Name and email are required." },
+        { success: false, message: "Name, email, and message are required." },
         { status: 400 }
       );
     }
